@@ -20,8 +20,8 @@ package com.deathmotion.antivpn.schedulers;
 
 import com.deathmotion.antivpn.AVBukkit;
 import com.deathmotion.antivpn.interfaces.Scheduler;
+import com.deathmotion.antivpn.schedulers.impl.FoliaScheduler;
 import org.jetbrains.annotations.NotNull;
-import com.deathmotion.foliascheduler.*;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;

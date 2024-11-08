@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.antivpn.managers;
+package com.deathmotion.antivpn.util;
+
 import com.deathmotion.antivpn.AntiVPNPlatform;
 import com.deathmotion.antivpn.data.Constants;
+import com.deathmotion.antivpn.managers.LogManager;
 import com.deathmotion.antivpn.models.Settings;
-import com.deathmotion.antivpn.util.AVVersion;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import net.kyori.adventure.text.Component;
@@ -33,12 +34,12 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.concurrent.CompletableFuture;
 
-public class UpdateManager<P> {
+public class UpdateChecker<P> {
     private final AntiVPNPlatform<P> platform;
     private final Settings settings;
     private final LogManager<P> logManager;
 
-    public UpdateManager(AntiVPNPlatform<P> platform) {
+    public UpdateChecker(AntiVPNPlatform<P> platform) {
         this.platform = platform;
         this.settings = platform.getConfigManager().getSettings();
         this.logManager = platform.getLogManager();
@@ -51,7 +52,7 @@ public class UpdateManager<P> {
     public void checkForUpdate() {
         CompletableFuture.runAsync(() -> {
             try {
-                AVVersion localVersion = platform.getVersion();
+                AVVersion localVersion = AVVersions.CURRENT;
                 AVVersion latestVersion = fetchLatestGitHubVersion();
 
                 if (latestVersion != null) {
@@ -90,7 +91,7 @@ public class UpdateManager<P> {
 
     private void notifyUpdateAvailable(AVVersion currentVersion, AVVersion newVersion) {
         if (settings.getUpdateChecker().isPrintToConsole()) {
-            platform.sendConsoleMessage(Component.text("[AntiHealthIndicator] ", NamedTextColor.DARK_GREEN)
+            platform.sendConsoleMessage(Component.text("[AntiVPN] ", NamedTextColor.DARK_GREEN)
                     .append(Component.text("Update available! ", NamedTextColor.BLUE))
                     .append(Component.text("Current version: ", NamedTextColor.WHITE))
                     .append(Component.text(currentVersion.toString(), NamedTextColor.GOLD))
@@ -104,7 +105,7 @@ public class UpdateManager<P> {
 
     private void notifyOnDevBuild(AVVersion currentVersion, AVVersion newVersion) {
         if (settings.getUpdateChecker().isPrintToConsole()) {
-            platform.sendConsoleMessage(Component.text("[AntiHealthIndicator] ", NamedTextColor.DARK_GREEN)
+            platform.sendConsoleMessage(Component.text("[AntiVPN] ", NamedTextColor.DARK_GREEN)
                     .append(Component.text("Development build detected. ", NamedTextColor.WHITE))
                     .append(Component.text("Current version: ", NamedTextColor.WHITE))
                     .append(Component.text(currentVersion.toString(), NamedTextColor.AQUA))

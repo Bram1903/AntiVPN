@@ -17,26 +17,61 @@
  */
 
 package com.deathmotion.antivpn.util;
-import com.deathmotion.antivpn.AntiVPNPlatform;
+
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.Optional;
-import java.util.logging.Logger;
 
 /**
- * Represents an AntiHealthIndicator version using Semantic Versioning.
+ * Represents a PacketEvents version using Semantic Versioning.
  * Supports version comparison, cloning, and provides a string representation.
- * Snapshots will always resolve to a newer version than the non-snapshot version if major, minor, and patch are the same.
+ * Snapshot versioning is also supported.
+ * Generally a snapshot version is published before the release version,
+ * and thus, is considered "older" than the release version.
  */
 public class AVVersion implements Comparable<AVVersion> {
-
-    public static final AVVersion UNKNOWN = new AVVersion(0, 0, 0);
 
     private final int major;
     private final int minor;
     private final int patch;
     private final boolean snapshot;
+    private final @Nullable String snapshotCommit;
+
+    /**
+     * Constructs a {@link AVVersion} instance.
+     *
+     * @param major          the major version number.
+     * @param minor          the minor version number.
+     * @param patch          the patch version number.
+     * @param snapshot       whether the version is a snapshot.
+     * @param snapshotCommit the snapshot commit hash, if available.
+     */
+    public AVVersion(
+            final int major, final int minor, final int patch,
+            final boolean snapshot, final @Nullable String snapshotCommit
+    ) {
+        this.major = major;
+        this.minor = minor;
+        this.patch = patch;
+        this.snapshot = snapshot;
+        this.snapshotCommit = snapshotCommit;
+    }
+
+    /**
+     * Constructs a {@link AVVersion} instance.
+     *
+     * @param major          the major version number.
+     * @param minor          the minor version number.
+     * @param patch          the patch version number.
+     * @param snapshotCommit the snapshot commit hash, if available.
+     */
+    public AVVersion(
+            final int major, final int minor, final int patch,
+            final @Nullable String snapshotCommit
+    ) {
+        this(major, minor, patch, snapshotCommit != null, snapshotCommit);
+    }
 
     /**
      * Constructs a {@link AVVersion} instance.
@@ -47,10 +82,7 @@ public class AVVersion implements Comparable<AVVersion> {
      * @param snapshot whether the version is a snapshot.
      */
     public AVVersion(final int major, final int minor, final int patch, final boolean snapshot) {
-        this.major = major;
-        this.minor = minor;
-        this.patch = patch;
-        this.snapshot = snapshot;
+        this(major, minor, patch, snapshot, null);
     }
 
     /**
@@ -69,36 +101,33 @@ public class AVVersion implements Comparable<AVVersion> {
      *
      * @param version the version string (e.g., "1.8.9-SNAPSHOT").
      * @throws IllegalArgumentException if the version string format is incorrect.
+     * @deprecated use {@link #fromString(String)} instead.
      */
-    public static AVVersion fromString(@NotNull final String version) {
+    public AVVersion(@NotNull final String version) {
         String versionWithoutSnapshot = version.replace("-SNAPSHOT", "");
-        String[] parts = versionWithoutSnapshot.split("\\.");
+        String[] largeParts = versionWithoutSnapshot.split("\\+");
+        String[] parts = largeParts.length > 0 ? largeParts[0].split("\\.") : null;
 
-        if (parts.length < 2 || parts.length > 3) {
-            throw new IllegalArgumentException("Version string must be in the format 'major.minor[.patch][-SNAPSHOT]' found '" + version + "' instead.");
+        if (largeParts.length < 1 || largeParts.length > 2
+                || parts.length < 2 || parts.length > 3) {
+            throw new IllegalArgumentException("Version string must be in the format 'major.minor[.patch][+commit][-SNAPSHOT]', found '" + version + "' instead");
         }
 
-        int major = Integer.parseInt(parts[0]);
-        int minor = Integer.parseInt(parts[1]);
-        int patch = parts.length > 2 ? Integer.parseInt(parts[2]) : 0;
-        boolean snapshot = version.contains("-SNAPSHOT");
-
-        return new AVVersion(major, minor, patch, snapshot);
+        this.major = Integer.parseInt(parts[0]);
+        this.minor = Integer.parseInt(parts[1]);
+        this.patch = parts.length > 2 ? Integer.parseInt(parts[2]) : 0;
+        this.snapshot = version.contains("-SNAPSHOT");
+        this.snapshotCommit = largeParts.length > 1 ? largeParts[1] : null;
     }
 
     /**
-     * Creates a {@link AVVersion} instance from the package implementation version.
+     * Constructs a {@link AVVersion} instance from a version string.
      *
-     * @return a {@link AVVersion} instance.
+     * @param version the version string (e.g., "1.8.9-SNAPSHOT").
+     * @throws IllegalArgumentException if the version string format is incorrect.
      */
-    public static AVVersion createFromPackageVersion() {
-        Optional<AVVersion> version = Optional.ofNullable(AntiVPNPlatform.class.getPackage().getImplementationVersion()).map(AVVersion::fromString);
-        if (!version.isPresent()) {
-            Logger logger = Logger.getLogger(AntiVPNPlatform.class.getName());
-            logger.warning("[antihealthindicator-version] Failed to retrieve the AntiHealthIndicator version from the package implementation version. Are you using a using a custom build?");
-        }
-
-        return version.orElse(UNKNOWN);
+    public static AVVersion fromString(@NotNull final String version) {
+        return new AVVersion(version);
     }
 
     /**
@@ -138,10 +167,21 @@ public class AVVersion implements Comparable<AVVersion> {
     }
 
     /**
+     * Gets the snapshot commit hash of the PacketEvents snapshot version. May be of any length.
+     * Availability is not guaranteed since it is contingent on how the program was built.
+     * Generally speaking, the commit hash can only be available if the PacketEvents version is a snapshot version.
+     *
+     * @return the snapshot commit hash, if available.
+     */
+    public @Nullable String snapshotCommit() {
+        return snapshotCommit;
+    }
+
+    /**
      * Compares this {@link AVVersion} with another {@link AVVersion}.
      *
      * @param other the other {@link AVVersion}.
-     * @return a negative integer, zero, or a positive integer as this version is less than,
+     * @return a negative integer, zero, or a positive integer as this version can be less than,
      * equal to, or greater than the specified version.
      */
     @Override
@@ -173,7 +213,8 @@ public class AVVersion implements Comparable<AVVersion> {
         return this.major == other.major &&
                 this.minor == other.minor &&
                 this.patch == other.patch &&
-                this.snapshot == other.snapshot;
+                this.snapshot == other.snapshot &&
+                Objects.equals(this.snapshotCommit, other.snapshotCommit);
     }
 
     /**
@@ -203,7 +244,7 @@ public class AVVersion implements Comparable<AVVersion> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(major, minor, patch, snapshot);
+        return Objects.hash(major, minor, patch, snapshot, snapshotCommit);
     }
 
     /**
@@ -213,16 +254,28 @@ public class AVVersion implements Comparable<AVVersion> {
      */
     @Override
     public AVVersion clone() {
-        return new AVVersion(major, minor, patch, snapshot);
+        return new AVVersion(major, minor, patch, snapshot, snapshotCommit);
     }
 
     /**
      * Converts the {@link AVVersion} to a string representation.
+     * If this is a stable release, the snapshot and the commit will not be included in the representation.
      *
-     * @return a string representation of the version.
+     * @return string representation of the version.
      */
     @Override
     public String toString() {
-        return major + "." + minor + "." + patch + (snapshot ? "-SNAPSHOT" : "");
+        return major + "." + minor + "." + patch + (snapshot && snapshotCommit != null ? ("+" + snapshotCommit + "-SNAPSHOT") : "");
+    }
+
+    /**
+     * Converts the {@link AVVersion} to a string representation with a guarantee
+     * that it will not have the commit attached to it.
+     * Useful for accessing the string representation for metrics
+     * as detailed information, such as the commit, is not required.
+     * @return guaranteed string representation without commit.
+     */
+    public String toStringWithoutSnapshot() {
+        return major + "." + minor + "." + patch;
     }
 }
