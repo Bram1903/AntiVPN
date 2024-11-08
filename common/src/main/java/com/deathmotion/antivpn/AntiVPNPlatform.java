@@ -19,8 +19,10 @@
 package com.deathmotion.antivpn;
 
 
+import com.deathmotion.antivpn.interfaces.Scheduler;
 import com.deathmotion.antivpn.managers.ConfigManager;
 import com.deathmotion.antivpn.managers.LogManager;
+import com.deathmotion.antivpn.util.AVVersion;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 
@@ -28,8 +30,12 @@ import java.util.UUID;
 
 @Getter
 public abstract class AntiVPNPlatform<P> {
+    private final AVVersion version = AVVersion.createFromPackageVersion();
+
     protected ConfigManager<P> configManager;
     protected LogManager<P> logManager;
+
+    protected Scheduler scheduler;
 
     /**
      * Called when the platform is initialized.
@@ -74,6 +80,8 @@ public abstract class AntiVPNPlatform<P> {
      * @param message The message to send.
      */
     public abstract void sendConsoleMessage(Component message);
+
+    public abstract void addUpdateNotifier(AntiVPNPlatform<P> platform, AVVersion latestVersion);
 
     /**
      * Gets the plugin directory.

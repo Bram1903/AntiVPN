@@ -18,7 +18,10 @@
 
 package com.deathmotion.antivpn;
 
+import com.deathmotion.antivpn.listener.UpdateNotifier;
+import com.deathmotion.antivpn.util.AVVersion;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
@@ -43,7 +46,12 @@ public class BukkitAntiVPN extends AntiVPNPlatform<JavaPlugin> {
 
     @Override
     public void sendConsoleMessage(Component message) {
+        Bukkit.getConsoleSender().sendMessage(message);
+    }
 
+    @Override
+    public void addUpdateNotifier(AntiVPNPlatform<JavaPlugin> platform, AVVersion latestVersion) {
+        Bukkit.getPluginManager().registerEvents(new UpdateNotifier<>(platform, latestVersion), this.plugin);
     }
 
     @Override

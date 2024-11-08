@@ -16,23 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.antivpn.models;
+package com.deathmotion.antivpn.data;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-public class Settings {
-    private boolean Debug = false;
-
-    private UpdateChecker UpdateChecker = new UpdateChecker();
-
-    @Getter
-    @Setter
-    public static class UpdateChecker {
-        private boolean Enabled = true;
-        private boolean PrintToConsole = true;
-        private boolean NotifyInGame = true;
-    }
+public class Constants {
+    public static final String GITHUB_API_URL = "https://api.github.com/repos/Bram1903/AntiVPN/releases/latest";
+    public static final String GITHUB_URL = "https://github.com/Bram1903/AntiVPN";
+    public static final String SPIGOT_URL = "https://www.spigotmc.org/resources/TBD/";
 }
+

@@ -16,23 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.antivpn.models;
+package com.deathmotion.antivpn.interfaces;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
-@Getter
-@Setter
-public class Settings {
-    private boolean Debug = false;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
-    private UpdateChecker UpdateChecker = new UpdateChecker();
+public interface Scheduler {
+    void runAsyncTask(Consumer<Object> task);
 
-    @Getter
-    @Setter
-    public static class UpdateChecker {
-        private boolean Enabled = true;
-        private boolean PrintToConsole = true;
-        private boolean NotifyInGame = true;
-    }
+    void runAsyncTaskDelayed(Consumer<Object> task, long delay, TimeUnit timeUnit);
+
+    void runAsyncTaskAtFixedRate(@NotNull Consumer<Object> task, long delay, long period, @NotNull TimeUnit timeUnit);
 }

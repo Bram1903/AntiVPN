@@ -9,6 +9,8 @@ run-paper = "2.3.0"
 lombok = "1.18.30"
 shadow = "8.3.0"
 spongeGradle = "2.2.0"
+foliaScheduler = "1.0.0"
+gson = "2.11.0"
 
 [libraries]
 snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
@@ -18,6 +20,8 @@ paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" 
 velocity = { group = "com.velocitypowered", name = "velocity-api", version.ref = "velocity" }
 bungeecord = { group = "net.md-5", name = "bungeecord-api", version.ref = "bungeecord" }
 sponge = { group = "org.spongepowered", name = "spongeapi", version.ref = "sponge" }
+foliaScheduler = { group = "com.deathmotion", name = "FoliaScheduler", version.ref = "foliaScheduler" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
 [plugins]
 run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }
