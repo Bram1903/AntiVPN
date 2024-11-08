@@ -1,0 +1,26 @@
+[versions]
+paper = "1.21-R0.1-SNAPSHOT"
+velocity = "3.3.0-SNAPSHOT"
+bungeecord = "1.21-R0.1-SNAPSHOT"
+sponge = "8.0.0"
+snakeyaml = "2.2"
+adventure = "4.17.0"
+run-paper = "2.3.0"
+lombok = "1.18.30"
+shadow = "8.3.0"
+spongeGradle = "2.2.0"
+
+[libraries]
+snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
+adventure-api = { group = "net.kyori", name = "adventure-api", version.ref = "adventure" }
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
+velocity = { group = "com.velocitypowered", name = "velocity-api", version.ref = "velocity" }
+bungeecord = { group = "net.md-5", name = "bungeecord-api", version.ref = "bungeecord" }
+sponge = { group = "org.spongepowered", name = "spongeapi", version.ref = "sponge" }
+
+[plugins]
+run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }
+run-velocity = { id = "xyz.jpenilla.run-velocity", version.ref = "run-paper" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+spongeGradle = { id = "org.spongepowered.gradle.plugin", version.ref = "spongeGradle" }

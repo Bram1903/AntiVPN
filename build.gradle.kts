@@ -1,0 +1,73 @@
+import java.io.ByteArrayOutputStream
+
+// TODO UPDATE
+val fullVersion = "1.0.0"
+val snapshot = true
+
+group = "com.deathmotion.antivpn"
+description = rootProject.name
+
+fun getVersionMeta(includeHash: Boolean): String {
+    if (!snapshot) {
+        return ""
+    }
+    var commitHash = ""
+    if (includeHash && file(".git").isDirectory) {
+        val stdout = ByteArrayOutputStream()
+        exec {
+            commandLine("git", "rev-parse", "--short", "HEAD")
+            standardOutput = stdout
+        }
+        commitHash = "+${stdout.toString().trim()}"
+    }
+    return "$commitHash-SNAPSHOT"
+}
+version = "$fullVersion${getVersionMeta(true)}"
+ext["versionNoHash"] = "$fullVersion${getVersionMeta(false)}"
+
+tasks {
+    wrapper {
+        gradleVersion = "8.10.2"
+        distributionType = Wrapper.DistributionType.ALL
+    }
+
+    val taskSubModules: (String) -> Array<Task> = { task ->
+        subprojects.filterNot { it.path == ":platforms" }.map { it.tasks[task] }.toTypedArray()
+    }
+
+    register("build") {
+        dependsOn(*taskSubModules("build"))
+        group = "build"
+
+        doLast {
+            val buildOut = project.layout.buildDirectory.dir("libs").get().asFile
+            if (!buildOut.exists())
+                buildOut.mkdirs()
+
+            for (subproject in subprojects) {
+                val subIn = subproject.layout.buildDirectory.dir("libs").get()
+
+                copy {
+                    from(subIn)
+                    into(buildOut)
+                }
+            }
+        }
+    }
+
+    register<Delete>("clean") {
+        dependsOn(*taskSubModules("clean"))
+        group = "build"
+        delete(rootProject.layout.buildDirectory)
+    }
+
+    defaultTasks("build")
+}
+
+allprojects {
+    tasks {
+        withType<Jar> {
+            archiveVersion = rootProject.ext["versionNoHash"] as String
+        }
+    }
+}
