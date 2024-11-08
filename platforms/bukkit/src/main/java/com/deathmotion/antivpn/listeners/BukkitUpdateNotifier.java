@@ -29,11 +29,11 @@ import org.bukkit.event.player.PlayerLoginEvent;
 
 import java.util.concurrent.TimeUnit;
 
-public class UpdateNotifier implements Listener {
+public class BukkitUpdateNotifier implements Listener {
     private final AVBukkit plugin;
     private final Component updateComponent;
 
-    public UpdateNotifier(AVBukkit plugin, AVVersion latestVersion) {
+    public BukkitUpdateNotifier(AVBukkit plugin, AVVersion latestVersion) {
         this.plugin = plugin;
         this.updateComponent = plugin.getAntiVPN().getMessages().updateAvailable(latestVersion);
     }

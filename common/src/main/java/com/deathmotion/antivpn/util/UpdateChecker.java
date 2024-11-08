@@ -99,7 +99,7 @@ public class UpdateChecker<P> {
                     .append(Component.text(newVersion.toString(), NamedTextColor.DARK_PURPLE)));
         }
         if (settings.getUpdateChecker().isNotifyInGame()) {
-            platform.addUpdateNotifier(platform, newVersion);
+            platform.addUpdateNotifier(newVersion);
         }
     }
 

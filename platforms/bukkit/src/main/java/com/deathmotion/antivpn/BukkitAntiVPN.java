@@ -18,7 +18,7 @@
 
 package com.deathmotion.antivpn;
 
-import com.deathmotion.antivpn.listeners.UpdateNotifier;
+import com.deathmotion.antivpn.listeners.BukkitUpdateNotifier;
 import com.deathmotion.antivpn.util.AVVersion;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -56,6 +56,6 @@ public class BukkitAntiVPN extends AntiVPNPlatform<JavaPlugin> {
 
     @Override
     public void addUpdateNotifier(AVVersion latestVersion) {
-        Bukkit.getPluginManager().registerEvents(new UpdateNotifier(this.plugin, latestVersion), this.plugin);
+        Bukkit.getPluginManager().registerEvents(new BukkitUpdateNotifier(this.plugin, latestVersion), this.plugin);
     }
 }
