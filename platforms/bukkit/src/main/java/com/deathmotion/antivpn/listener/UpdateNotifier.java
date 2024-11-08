@@ -34,6 +34,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 
 import java.util.concurrent.TimeUnit;
 
+//TODO: Make this class more generic, so it can be used in other platform implementations.
 public class UpdateNotifier<P> implements Listener {
     private final AntiVPNPlatform<P> platform;
     private final Component updateComponent;
