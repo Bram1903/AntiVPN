@@ -1,0 +1,11 @@
+{
+  "id": "antivpn",
+  "name": "AntiVPN",
+  "version": "${version}",
+  "description": "Prevent VPN users from joining your server",
+  "url": "https://github.com/Bram1903/AntiVPN",
+  "authors": [
+    "Bram"
+  ],
+  "main": "com.deathmotion.antivpn.AVVelocity"
+}

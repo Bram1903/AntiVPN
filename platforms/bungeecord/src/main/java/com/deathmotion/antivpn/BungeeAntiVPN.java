@@ -18,37 +18,40 @@
 
 package com.deathmotion.antivpn;
 
-import com.deathmotion.antivpn.listeners.BukkitUpdateNotifier;
 import com.deathmotion.antivpn.util.AVVersion;
+import lombok.Getter;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.UUID;
 
-public class BukkitAntiVPN extends AntiVPNPlatform<JavaPlugin> {
+@Getter
+public class BungeeAntiVPN extends AntiVPNPlatform<Plugin> {
 
-    private final AVBukkit plugin;
+    private final AVBungee plugin;
 
-    public BukkitAntiVPN(AVBukkit plugin) {
+    public BungeeAntiVPN(AVBungee plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public JavaPlugin getPlatform() {
+    public Plugin getPlatform() {
         return this.plugin;
     }
 
     @Override
     public boolean hasPermission(UUID sender, String permission) {
-        Player player = Bukkit.getPlayer(sender);
-        return player != null && player.hasPermission(permission);
+        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(sender);
+        if (player == null) return false;
+
+        return player.hasPermission(permission);
     }
 
     @Override
     public void sendConsoleMessage(Component message) {
-        plugin.getAdventure().console().sendMessage(message);
+        plugin.getAudiences().console().sendMessage(message);
     }
 
     @Override
@@ -58,6 +61,6 @@ public class BukkitAntiVPN extends AntiVPNPlatform<JavaPlugin> {
 
     @Override
     public void addUpdateNotifier(AVVersion latestVersion) {
-        Bukkit.getPluginManager().registerEvents(new BukkitUpdateNotifier(this.plugin, latestVersion), this.plugin);
+
     }
 }

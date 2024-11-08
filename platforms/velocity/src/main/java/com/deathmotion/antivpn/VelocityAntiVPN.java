@@ -18,46 +18,52 @@
 
 package com.deathmotion.antivpn;
 
-import com.deathmotion.antivpn.listeners.BukkitUpdateNotifier;
 import com.deathmotion.antivpn.util.AVVersion;
+import com.google.inject.Inject;
+import com.velocitypowered.api.plugin.annotation.DataDirectory;
+import com.velocitypowered.api.proxy.Player;
+import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
+import java.nio.file.Path;
 import java.util.UUID;
 
-public class BukkitAntiVPN extends AntiVPNPlatform<JavaPlugin> {
+public class VelocityAntiVPN extends AntiVPNPlatform<ProxyServer> {
 
-    private final AVBukkit plugin;
+    private final ProxyServer proxy;
+    private final Path dataDirectory;
 
-    public BukkitAntiVPN(AVBukkit plugin) {
-        this.plugin = plugin;
+    @Inject
+    public VelocityAntiVPN(ProxyServer proxy, @DataDirectory Path dataDirectory) {
+        this.proxy = proxy;
+        this.dataDirectory = dataDirectory;
     }
 
     @Override
-    public JavaPlugin getPlatform() {
-        return this.plugin;
+    public ProxyServer getPlatform() {
+        return this.proxy;
     }
 
     @Override
     public boolean hasPermission(UUID sender, String permission) {
-        Player player = Bukkit.getPlayer(sender);
-        return player != null && player.hasPermission(permission);
+        Player player = this.proxy.getPlayer(sender).orElse(null);
+        if (player == null) return false;
+
+        return player.hasPermission(permission);
     }
 
     @Override
     public void sendConsoleMessage(Component message) {
-        plugin.getAdventure().console().sendMessage(message);
+        proxy.sendMessage(message);
     }
 
     @Override
     public String getPluginDirectory() {
-        return this.plugin.getDataFolder().getAbsolutePath();
+        return this.dataDirectory.toAbsolutePath().toString();
     }
 
     @Override
     public void addUpdateNotifier(AVVersion latestVersion) {
-        Bukkit.getPluginManager().registerEvents(new BukkitUpdateNotifier(this.plugin, latestVersion), this.plugin);
+
     }
 }

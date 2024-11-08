@@ -16,32 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.antivpn;
+package com.deathmotion.antivpn.services;
 
-import com.deathmotion.antivpn.schedulers.BukkitScheduler;
-import lombok.Getter;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import org.bukkit.plugin.java.JavaPlugin;
-
-@Getter
-public class AVBukkit extends JavaPlugin {
-
-    private final BukkitAntiVPN antiVPN = new BukkitAntiVPN(this);
-    private BukkitAudiences adventure;
-
-    @Override
-    public void onEnable() {
-        adventure = BukkitAudiences.create(this);
-
-        // Initialize the platform
-        antiVPN.commonOnInitialize();
-        antiVPN.scheduler = new BukkitScheduler(this);
-        antiVPN.commonOnEnable();
-    }
-
-    @Override
-    public void onDisable() {
-        antiVPN.commonOnDisable();
-        adventure.close();
-    }
+public class APIService {
 }

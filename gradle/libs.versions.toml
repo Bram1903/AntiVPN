@@ -5,6 +5,7 @@ bungeecord = "1.21-R0.1-SNAPSHOT"
 sponge = "8.0.0"
 snakeyaml = "2.2"
 adventure = "4.17.0"
+adventure-platform = "4.3.4"
 run-paper = "2.3.0"
 lombok = "1.18.30"
 shadow = "8.3.0"
@@ -14,6 +15,8 @@ gson = "2.11.0"
 [libraries]
 snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
 adventure-api = { group = "net.kyori", name = "adventure-api", version.ref = "adventure" }
+adventure-bukkit = { group = "net.kyori", name = "adventure-platform-bukkit", version.ref = "adventure-platform" }
+adventure-bungee = { group = "net.kyori", name = "adventure-platform-bungeecord", version.ref = "adventure-platform" }
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
 velocity = { group = "com.velocitypowered", name = "velocity-api", version.ref = "velocity" }

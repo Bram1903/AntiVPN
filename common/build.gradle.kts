@@ -5,10 +5,10 @@ plugins {
 }
 
 dependencies {
-    compileOnlyApi(libs.adventure.api)
-    compileOnlyApi(libs.snakeyaml)
+    compileOnly(libs.adventure.api)
+    compileOnly(libs.snakeyaml)
+    compileOnly(libs.gson)
     compileOnlyApi(libs.lombok)
-    compileOnlyApi(libs.gson)
     annotationProcessor(libs.lombok)
 }
 

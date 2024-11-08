@@ -36,7 +36,6 @@ public abstract class AntiVPNPlatform<P> {
     protected LogManager<P> logManager;
 
     protected Messages<P> messages;
-
     protected Scheduler scheduler;
 
     /**
