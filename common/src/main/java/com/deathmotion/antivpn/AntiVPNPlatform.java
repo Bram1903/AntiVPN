@@ -23,6 +23,7 @@ import com.deathmotion.antivpn.interfaces.Scheduler;
 import com.deathmotion.antivpn.managers.ConfigManager;
 import com.deathmotion.antivpn.managers.LogManager;
 import com.deathmotion.antivpn.util.AVVersion;
+import com.deathmotion.antivpn.util.Messages;
 import com.deathmotion.antivpn.util.UpdateChecker;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -33,6 +34,8 @@ import java.util.UUID;
 public abstract class AntiVPNPlatform<P> {
     protected ConfigManager<P> configManager;
     protected LogManager<P> logManager;
+
+    protected Messages<P> messages;
 
     protected Scheduler scheduler;
 
@@ -48,7 +51,10 @@ public abstract class AntiVPNPlatform<P> {
      * Called when the platform is enabled.
      */
     public void commonOnEnable() {
-        new UpdateChecker<>(this);
+        messages = new Messages<>(this);
+
+        // TODO: Uncomment this when the first version is released
+        //new UpdateChecker<>(this);
 
         logManager.info("AntiVPN is enabled!");
     }
@@ -82,12 +88,17 @@ public abstract class AntiVPNPlatform<P> {
      */
     public abstract void sendConsoleMessage(Component message);
 
-    public abstract void addUpdateNotifier(AntiVPNPlatform<P> platform, AVVersion latestVersion);
-
     /**
      * Gets the plugin directory.
      *
      * @return The plugin directory.
      */
     public abstract String getPluginDirectory();
+
+    /**
+     * Adds an update notifier.
+     *
+     * @param latestVersion The latest version.
+     */
+    public abstract void addUpdateNotifier(AVVersion latestVersion);
 }
