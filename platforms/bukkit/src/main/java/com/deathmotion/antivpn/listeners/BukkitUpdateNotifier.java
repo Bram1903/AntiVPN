@@ -47,7 +47,7 @@ public class BukkitUpdateNotifier implements Listener {
 
         plugin.getAntiVPN().getScheduler().runAsyncTaskDelayed((o) -> {
             if (plugin.getAntiVPN().hasPermission(player.getUniqueId(), "AntiVpn.Notify")) {
-                player.sendMessage(updateComponent);
+                plugin.getAdventure().player(player).sendMessage(updateComponent);
             }
         }, 2, TimeUnit.SECONDS);
     }
