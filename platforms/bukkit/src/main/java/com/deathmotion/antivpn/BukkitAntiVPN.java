@@ -22,6 +22,7 @@ import com.deathmotion.antivpn.listeners.BukkitUpdateNotifier;
 import com.deathmotion.antivpn.util.AVVersion;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
@@ -36,12 +37,13 @@ public class BukkitAntiVPN extends AntiVPNPlatform<JavaPlugin> {
 
     @Override
     public JavaPlugin getPlatform() {
-        return null;
+        return this.plugin;
     }
 
     @Override
     public boolean hasPermission(UUID sender, String permission) {
-        return false;
+        Player player = Bukkit.getPlayer(sender);
+        return player != null && player.hasPermission(permission);
     }
 
     @Override
