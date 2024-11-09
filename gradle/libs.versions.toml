@@ -8,7 +8,6 @@ adventure = "4.17.0"
 adventure-platform = "4.3.4"
 run-paper = "2.3.0"
 lombok = "1.18.34"
-shadow = "8.3.0"
 spongeGradle = "2.2.0"
 gson = "2.11.0"
 
