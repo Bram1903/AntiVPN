@@ -14,7 +14,6 @@ repositories {
 dependencies {
     shadow(project(":common"))
     compileOnly(libs.velocity)
-    annotationProcessor(libs.lombok)
     annotationProcessor(libs.velocity)
 }
 

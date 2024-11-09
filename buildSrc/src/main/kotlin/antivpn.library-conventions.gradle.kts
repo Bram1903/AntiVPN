@@ -1,6 +1,7 @@
 plugins {
     `java-library`
     `maven-publish`
+    `version-catalog`
 }
 
 group = rootProject.group
@@ -9,6 +10,13 @@ description = rootProject.description
 
 repositories {
     mavenCentral()
+}
+
+val libs = project.extensions.getByType<VersionCatalogsExtension>().named("libs")
+
+dependencies {
+    compileOnly(libs.findLibrary("lombok").get())
+    annotationProcessor(libs.findLibrary("lombok").get())
 }
 
 java {
@@ -38,7 +46,7 @@ tasks {
     defaultTasks("build")
 }
 
-// So that SNAPSHOT is always the latest SNAPSHOT
+// Ensure that the latest SNAPSHOT version is always retrieved
 configurations.all {
     resolutionStrategy.cacheDynamicVersionsFor(0, TimeUnit.SECONDS)
 }

@@ -8,8 +8,6 @@ dependencies {
     compileOnly(libs.adventure.api)
     compileOnly(libs.snakeyaml)
     compileOnly(libs.gson)
-    compileOnlyApi(libs.lombok)
-    annotationProcessor(libs.lombok)
 }
 
 tasks {

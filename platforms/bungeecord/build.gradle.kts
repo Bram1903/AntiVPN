@@ -14,7 +14,6 @@ dependencies {
     shadow(project(":common"))
     shadow(libs.adventure.bungee)
     compileOnly(libs.bungeecord)
-    annotationProcessor(libs.lombok)
 }
 
 tasks {

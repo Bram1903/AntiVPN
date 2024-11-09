@@ -12,7 +12,6 @@ dependencies {
     shadow(project(":common"))
     shadow(libs.adventure.bukkit)
     compileOnly(libs.paper)
-    annotationProcessor(libs.lombok)
 }
 
 tasks {
