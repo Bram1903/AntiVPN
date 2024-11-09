@@ -16,24 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.antivpn.services;
+package com.deathmotion.antivpn.storage.impl;
 
-import com.deathmotion.antivpn.AntiVPNPlatform;
 import com.deathmotion.antivpn.models.AddressInfo;
-import com.deathmotion.antivpn.services.adapters.APIAdapter;
-import com.deathmotion.antivpn.services.adapters.impl.IPRiskAdapter;
+import net.jodah.expiringmap.ExpiringMap;
 
-public class APIService<P> {
+import java.util.concurrent.TimeUnit;
 
-    private final AntiVPNPlatform<P> platform;
-    private final APIAdapter apiAdapter;
+public class MemoryCache {
+    private final ExpiringMap<String, AddressInfo> cache = ExpiringMap.builder()
+            .expiration(10, TimeUnit.MINUTES)
+            .build();
 
-    public APIService(AntiVPNPlatform<P> platform) {
-        this.platform = platform;
-        this.apiAdapter = new IPRiskAdapter<>(platform);
+    public void put(String key, AddressInfo value) {
+        cache.put(key, value);
     }
 
-    public AddressInfo getAddressInfo(String ipAddress) {
-        return apiAdapter.getAddressInfo(ipAddress);
+    public boolean containsKey(String key) {
+        return cache.containsKey(key);
+    }
+
+    public AddressInfo get(String key) {
+        return cache.get(key);
     }
 }

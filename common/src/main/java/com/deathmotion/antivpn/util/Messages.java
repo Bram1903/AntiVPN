@@ -43,4 +43,15 @@ public class Messages<P> {
                 )
                 .append(Component.text("!", NamedTextColor.GREEN));
     }
+
+    public Component vpnDetected() {
+        return Component.text("VPN Detected", NamedTextColor.RED)
+                .append(Component.newline())
+                .append(Component.newline())
+                .append(Component.text("Your IP is not residential.", NamedTextColor.GOLD))
+                .append(Component.newline())
+                .append(Component.newline())
+                .append(Component.newline())
+                .append(Component.text("If you believe this is a mistake, please contact a server administrator.", NamedTextColor.GRAY));
+    }
 }

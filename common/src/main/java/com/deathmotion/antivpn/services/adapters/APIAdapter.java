@@ -16,24 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.antivpn.services;
+package com.deathmotion.antivpn.services.adapters;
 
-import com.deathmotion.antivpn.AntiVPNPlatform;
 import com.deathmotion.antivpn.models.AddressInfo;
-import com.deathmotion.antivpn.services.adapters.APIAdapter;
-import com.deathmotion.antivpn.services.adapters.impl.IPRiskAdapter;
 
-public class APIService<P> {
-
-    private final AntiVPNPlatform<P> platform;
-    private final APIAdapter apiAdapter;
-
-    public APIService(AntiVPNPlatform<P> platform) {
-        this.platform = platform;
-        this.apiAdapter = new IPRiskAdapter<>(platform);
-    }
-
-    public AddressInfo getAddressInfo(String ipAddress) {
-        return apiAdapter.getAddressInfo(ipAddress);
-    }
+public interface APIAdapter {
+    public AddressInfo getAddressInfo(String ipAddress);
 }

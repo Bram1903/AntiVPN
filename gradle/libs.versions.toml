@@ -1,5 +1,5 @@
 [versions]
-paper = "1.21-R0.1-SNAPSHOT"
+paper = "1.21.3-R0.1-SNAPSHOT"
 velocity = "3.3.0-SNAPSHOT"
 bungeecord = "1.21-R0.1-SNAPSHOT"
 sponge = "8.0.0"
@@ -10,6 +10,7 @@ run-paper = "2.3.0"
 lombok = "1.18.34"
 spongeGradle = "2.2.0"
 gson = "2.11.0"
+expiringmap = "0.5.11"
 
 [libraries]
 snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
@@ -22,6 +23,7 @@ velocity = { group = "com.velocitypowered", name = "velocity-api", version.ref =
 bungeecord = { group = "net.md-5", name = "bungeecord-api", version.ref = "bungeecord" }
 sponge = { group = "org.spongepowered", name = "spongeapi", version.ref = "sponge" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+expiringmap = { group = "net.jodah", name = "expiringmap", version.ref = "expiringmap" }
 
 [plugins]
 run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }

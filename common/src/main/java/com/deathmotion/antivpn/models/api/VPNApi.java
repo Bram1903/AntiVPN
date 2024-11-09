@@ -16,10 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.antivpn.services;
+package com.deathmotion.antivpn.models.api;
 
-import com.deathmotion.antivpn.models.AddressInfo;
-
-public interface APIAdapter {
-    public AddressInfo getAddressInfo(String ipAddress);
+public enum VPNApi {
+    IPRISK
 }

@@ -22,6 +22,7 @@ package com.deathmotion.antivpn;
 import com.deathmotion.antivpn.interfaces.Scheduler;
 import com.deathmotion.antivpn.managers.ConfigManager;
 import com.deathmotion.antivpn.managers.LogManager;
+import com.deathmotion.antivpn.services.ConnectionService;
 import com.deathmotion.antivpn.util.AVVersion;
 import com.deathmotion.antivpn.util.Messages;
 import lombok.Getter;
@@ -37,6 +38,8 @@ public abstract class AntiVPNPlatform<P> {
     protected Messages<P> messages;
     protected Scheduler scheduler;
 
+    protected ConnectionService<P> connectionService;
+
     /**
      * Called when the platform is initialized.
      */
@@ -50,11 +53,10 @@ public abstract class AntiVPNPlatform<P> {
      */
     public void commonOnEnable() {
         messages = new Messages<>(this);
+        connectionService = new ConnectionService<>(this);
 
         // TODO: Uncomment this when the first version is released
         //new UpdateChecker<>(this);
-
-        logManager.info("AntiVPN is enabled!");
     }
 
     /**

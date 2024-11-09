@@ -18,6 +18,7 @@
 
 package com.deathmotion.antivpn.models;
 
+import com.deathmotion.antivpn.models.api.VPNApi;
 import lombok.Data;
 
 import java.util.Map;
@@ -25,6 +26,8 @@ import java.util.Map;
 @Data
 public class AddressInfo {
     private String ipAddress;
+    private VPNApi vpnApi;
+
     private boolean dataCenter;
     private boolean openProxy;
     private boolean vpn;

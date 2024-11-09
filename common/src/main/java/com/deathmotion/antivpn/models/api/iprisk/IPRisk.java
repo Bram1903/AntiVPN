@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.antivpn.models.api;
+package com.deathmotion.antivpn.models.api.iprisk;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Data;

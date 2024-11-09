@@ -1,5 +1,6 @@
 package com.deathmotion.antivpn;
 
+import com.deathmotion.antivpn.listeners.PlayerJoin;
 import com.deathmotion.antivpn.schedulers.BungeeScheduler;
 import lombok.Getter;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
@@ -17,6 +18,8 @@ public final class AVBungee extends Plugin {
 
         av.scheduler = new BungeeScheduler(this);
         av.commonOnEnable();
+
+        getProxy().getPluginManager().registerListener(this, new PlayerJoin(this));
     }
 
     @Override

@@ -16,24 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.antivpn.services;
+package com.deathmotion.antivpn.models.api.iprisk;
 
-import com.deathmotion.antivpn.AntiVPNPlatform;
-import com.deathmotion.antivpn.models.AddressInfo;
-import com.deathmotion.antivpn.services.adapters.APIAdapter;
-import com.deathmotion.antivpn.services.adapters.impl.IPRiskAdapter;
+import lombok.Data;
 
-public class APIService<P> {
+@Data
+public class ErrorResponse {
 
-    private final AntiVPNPlatform<P> platform;
-    private final APIAdapter apiAdapter;
+    private ErrorDetail error;
 
-    public APIService(AntiVPNPlatform<P> platform) {
-        this.platform = platform;
-        this.apiAdapter = new IPRiskAdapter<>(platform);
-    }
-
-    public AddressInfo getAddressInfo(String ipAddress) {
-        return apiAdapter.getAddressInfo(ipAddress);
+    @Data
+    public static class ErrorDetail {
+        private String status;
+        private String message;
     }
 }
