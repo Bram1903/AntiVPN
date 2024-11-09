@@ -23,6 +23,7 @@ import com.deathmotion.antivpn.models.AddressInfo;
 import com.deathmotion.antivpn.storage.StorageProvider;
 
 import java.net.InetAddress;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ConnectionService<P> {
@@ -37,35 +38,37 @@ public class ConnectionService<P> {
         this.apiService = new APIService<>(platform);
     }
 
-    public void handlePreLogin(UUID uuid, InetAddress address) {
-        if (!isValidIp(uuid, address)) return;
-
-        if (storageProvider.getAddressInfo(address.getHostAddress()) == null) {
-            AddressInfo addressInfo = apiService.getAddressInfo(address.getHostAddress());
-
-            if (addressInfo != null) {
-                storageProvider.putAddressInfo(address.getHostAddress(), apiService.getAddressInfo(address.getHostAddress()));
+    public void handleLogin(UUID uuid, InetAddress address) {
+        platform.getScheduler().runAsyncTask((o) -> {
+            if (!isValidIp(uuid, address)) {
+                return;
             }
-        }
-    }
 
-    public boolean handleLogin(UUID uuid, InetAddress address) {
-        if (!isValidIp(uuid, address)) return false;
+            AddressInfo addressInfo = Optional.ofNullable(storageProvider.getAddressInfo(address.getHostAddress()))
+                    .orElseGet(() -> {
+                        AddressInfo newAddressInfo = apiService.getAddressInfo(address.getHostAddress());
+                        if (newAddressInfo != null) {
+                            storageProvider.putAddressInfo(address.getHostAddress(), newAddressInfo);
+                        }
+                        return newAddressInfo;
+                    });
 
-        AddressInfo addressInfo = storageProvider.getAddressInfo(address.getHostAddress());
-        if (addressInfo == null) return false;
+            if (addressInfo == null || platform.hasPermission(uuid, "AntiVPN.Bypass")) {
+                return;
+            }
 
-        return isVPN(addressInfo);
+            if (isVPN(addressInfo)) {
+                platform.getScheduler().runTask((o1) -> platform.kickPlayer(uuid, platform.getMessages().vpnDetected()));
+            }
+        });
     }
 
     private boolean isValidIp(UUID uuid, InetAddress address) {
-        // Check if the address is loop back (e.g., 127.0.0.1)
         if (address.isLoopbackAddress() || address.isAnyLocalAddress()) {
             platform.getLogManager().warn("Player " + uuid + " joined with a loopback or unspecified local address - " + address.getHostAddress());
             return false;
         }
 
-        // Check if the address is within a local network (e.g., 192.168.x.x, 10.x.x.x, etc.)
         if (address.isSiteLocalAddress()) {
             platform.getLogManager().warn("Player " + uuid + " joined with a site-local address - " + address.getHostAddress());
             return false;
@@ -78,3 +81,4 @@ public class ConnectionService<P> {
         return addressInfo.isVpn() || addressInfo.isDataCenter() || addressInfo.isOpenProxy();
     }
 }
+

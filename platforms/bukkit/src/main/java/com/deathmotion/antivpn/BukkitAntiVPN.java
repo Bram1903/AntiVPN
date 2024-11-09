@@ -21,6 +21,7 @@ package com.deathmotion.antivpn;
 import com.deathmotion.antivpn.listeners.UpdateNotifier;
 import com.deathmotion.antivpn.util.AVVersion;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -54,6 +55,14 @@ public class BukkitAntiVPN extends AntiVPNPlatform<JavaPlugin> {
     @Override
     public String getPluginDirectory() {
         return this.plugin.getDataFolder().getAbsolutePath();
+    }
+
+    @Override
+    public void kickPlayer(UUID uuid, Component reason) {
+        Player player = Bukkit.getPlayer(uuid);
+        if (player != null) {
+            player.kickPlayer(LegacyComponentSerializer.legacySection().serialize(reason));
+        }
     }
 
     @Override

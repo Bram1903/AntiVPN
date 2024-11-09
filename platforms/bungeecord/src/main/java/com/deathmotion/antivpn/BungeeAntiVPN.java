@@ -22,6 +22,7 @@ import com.deathmotion.antivpn.listeners.UpdateNotifier;
 import com.deathmotion.antivpn.util.AVVersion;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -58,6 +59,14 @@ public class BungeeAntiVPN extends AntiVPNPlatform<Plugin> {
     @Override
     public String getPluginDirectory() {
         return this.plugin.getDataFolder().getAbsolutePath();
+    }
+
+    @Override
+    public void kickPlayer(UUID uuid, Component reason) {
+        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(uuid);
+        if (player != null) {
+            player.disconnect(LegacyComponentSerializer.legacySection().serialize(reason));
+        }
     }
 
     @Override

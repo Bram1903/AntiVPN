@@ -35,12 +35,17 @@ public class BukkitScheduler implements Scheduler {
     }
 
     @Override
-    public void runAsyncTask(Consumer<Object> task) {
+    public void runTask(@NotNull Consumer<Object> task) {
+        FoliaScheduler.getGlobalRegionScheduler().run(plugin, task);
+    }
+
+    @Override
+    public void runAsyncTask(@NotNull Consumer<Object> task) {
         FoliaScheduler.getAsyncScheduler().runNow(plugin, task);
     }
 
     @Override
-    public void runAsyncTaskDelayed(Consumer<Object> task, long delay, TimeUnit timeUnit) {
+    public void runAsyncTaskDelayed(@NotNull Consumer<Object> task, long delay, @NotNull TimeUnit timeUnit) {
         FoliaScheduler.getAsyncScheduler().runDelayed(plugin, task, delay, timeUnit);
     }
 

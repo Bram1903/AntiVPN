@@ -20,12 +20,9 @@ package com.deathmotion.antivpn.listeners;
 
 import com.deathmotion.antivpn.AVVelocity;
 import com.velocitypowered.api.event.Subscribe;
-import com.velocitypowered.api.event.connection.PostLoginEvent;
-import com.velocitypowered.api.event.connection.PreLoginEvent;
+import com.velocitypowered.api.event.connection.LoginEvent;
 
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.util.Optional;
 import java.util.UUID;
 
 public class PlayerJoin {
@@ -36,22 +33,9 @@ public class PlayerJoin {
     }
 
     @Subscribe
-    public void onPlayerConnect(PreLoginEvent event) {
-        UUID uuid = event.getUniqueId();
-        Optional<InetAddress> addressOptional = event.getConnection().getVirtualHost().map(InetSocketAddress::getAddress);
-
-        addressOptional.ifPresent(address ->
-                plugin.getAv().getConnectionService().handlePreLogin(uuid, address)
-        );
-    }
-
-    @Subscribe
-    public void onPlayerConnect(PostLoginEvent event) {
+    public void onPlayerConnect(LoginEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
         InetAddress address = event.getPlayer().getRemoteAddress().getAddress();
-
-        if (plugin.getAv().getConnectionService().handleLogin(uuid, address)) {
-            event.getPlayer().disconnect(plugin.getAv().getMessages().vpnDetected());
-        }
+        plugin.getAv().getConnectionService().handleLogin(uuid, address);
     }
 }

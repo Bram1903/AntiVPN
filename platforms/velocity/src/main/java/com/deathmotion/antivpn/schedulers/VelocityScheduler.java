@@ -39,14 +39,21 @@ public final class VelocityScheduler implements Scheduler {
     }
 
     @Override
-    public void runAsyncTask(Consumer<Object> task) {
+    public void runTask(@NotNull Consumer<Object> task) {
         this.proxy.getScheduler()
                 .buildTask(this.plugin, () -> task.accept(null))
                 .schedule();
     }
 
     @Override
-    public void runAsyncTaskDelayed(Consumer<Object> task, long delay, TimeUnit timeUnit) {
+    public void runAsyncTask(@NotNull Consumer<Object> task) {
+        this.proxy.getScheduler()
+                .buildTask(this.plugin, () -> task.accept(null))
+                .schedule();
+    }
+
+    @Override
+    public void runAsyncTaskDelayed(@NotNull Consumer<Object> task, long delay, @NotNull TimeUnit timeUnit) {
         this.proxy.getScheduler()
                 .buildTask(this.plugin, () -> task.accept(null))
                 .delay(delay, timeUnit)

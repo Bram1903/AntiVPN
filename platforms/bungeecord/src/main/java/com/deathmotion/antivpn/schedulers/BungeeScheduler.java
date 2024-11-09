@@ -35,12 +35,17 @@ public final class BungeeScheduler implements Scheduler {
     }
 
     @Override
-    public void runAsyncTask(Consumer<Object> task) {
+    public void runTask(@NotNull Consumer<Object> task) {
         ProxyServer.getInstance().getScheduler().runAsync(plugin, () -> task.accept(null));
     }
 
     @Override
-    public void runAsyncTaskDelayed(Consumer<Object> task, long delay, TimeUnit timeUnit) {
+    public void runAsyncTask(@NotNull Consumer<Object> task) {
+        ProxyServer.getInstance().getScheduler().runAsync(plugin, () -> task.accept(null));
+    }
+
+    @Override
+    public void runAsyncTaskDelayed(@NotNull Consumer<Object> task, long delay, @NotNull TimeUnit timeUnit) {
         ProxyServer.getInstance().getScheduler().schedule(plugin, () -> task.accept(null), delay, timeUnit);
     }
 

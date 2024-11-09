@@ -19,9 +19,7 @@
 package com.deathmotion.antivpn.listeners;
 
 import com.deathmotion.antivpn.AVBungee;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.event.PostLoginEvent;
-import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -36,20 +34,9 @@ public class PlayerJoin implements Listener {
     }
 
     @EventHandler
-    public void onPreJoin(PreLoginEvent event) {
-        UUID uuid = event.getConnection().getUniqueId();
-        InetAddress address = event.getConnection().getVirtualHost().getAddress();
-
-        plugin.getAv().getConnectionService().handlePreLogin(uuid, address);
-    }
-
-    @EventHandler
     public void onPreJoin(PostLoginEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
         InetAddress address = event.getPlayer().getPendingConnection().getVirtualHost().getAddress();
-
-        if (plugin.getAv().getConnectionService().handleLogin(uuid, address)) {
-            event.getPlayer().disconnect(LegacyComponentSerializer.legacySection().serialize(plugin.getAv().getMessages().vpnDetected()));
-        }
+        plugin.getAv().getConnectionService().handleLogin(uuid, address);
     }
 }
