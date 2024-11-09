@@ -46,7 +46,7 @@ public class UpdateNotifier implements Listener {
         ProxiedPlayer player = event.getPlayer();
 
         plugin.getAv().getScheduler().runAsyncTaskDelayed((o) -> {
-            if (plugin.getAv().hasPermission(player.getUniqueId(), "AntiVpn.Notify")) {
+            if (plugin.getAv().hasPermission(player.getUniqueId(), "AntiVpn.Update.Notify")) {
                 plugin.getAudiences().player(player).sendMessage(updateComponent);
             }
         }, 2, TimeUnit.SECONDS);

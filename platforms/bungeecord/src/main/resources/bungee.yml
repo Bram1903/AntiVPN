@@ -2,11 +2,8 @@ name: AntiVPN
 author: Bram
 description: A plugin that prevents players from using VPNs to join your server.
 website: https://github.com/Bram1903/AntiVPN
-main: com.deathmotion.antivpn.AVBukkit
+main: com.deathmotion.antivpn.AVBungee
 version: ${version}
-api-version: '1.13'
-folia-supported: true
-load: POSTWORLD
 permissions:
   AntiVpn.Update.Notify:
     description: Notify a player when an update is available.
