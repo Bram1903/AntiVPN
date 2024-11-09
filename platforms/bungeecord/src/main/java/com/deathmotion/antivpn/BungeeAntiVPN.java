@@ -18,6 +18,7 @@
 
 package com.deathmotion.antivpn;
 
+import com.deathmotion.antivpn.listeners.UpdateNotifier;
 import com.deathmotion.antivpn.util.AVVersion;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -61,6 +62,6 @@ public class BungeeAntiVPN extends AntiVPNPlatform<Plugin> {
 
     @Override
     public void addUpdateNotifier(AVVersion latestVersion) {
-
+        ProxyServer.getInstance().getPluginManager().registerListener(this.plugin, new UpdateNotifier(this.plugin, latestVersion));
     }
 }

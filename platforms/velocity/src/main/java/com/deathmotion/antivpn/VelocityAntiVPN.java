@@ -18,6 +18,7 @@
 
 package com.deathmotion.antivpn;
 
+import com.deathmotion.antivpn.listeners.UpdateNotifier;
 import com.deathmotion.antivpn.util.AVVersion;
 import com.google.inject.Inject;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
@@ -30,23 +31,25 @@ import java.util.UUID;
 
 public class VelocityAntiVPN extends AntiVPNPlatform<ProxyServer> {
 
-    private final ProxyServer proxy;
+    private final AVVelocity plugin;
+    private final ProxyServer server;
     private final Path dataDirectory;
 
     @Inject
-    public VelocityAntiVPN(ProxyServer proxy, @DataDirectory Path dataDirectory) {
-        this.proxy = proxy;
+    public VelocityAntiVPN(AVVelocity plugin, ProxyServer server, @DataDirectory Path dataDirectory) {
+        this.plugin = plugin;
+        this.server = server;
         this.dataDirectory = dataDirectory;
     }
 
     @Override
     public ProxyServer getPlatform() {
-        return this.proxy;
+        return this.server;
     }
 
     @Override
     public boolean hasPermission(UUID sender, String permission) {
-        Player player = this.proxy.getPlayer(sender).orElse(null);
+        Player player = this.server.getPlayer(sender).orElse(null);
         if (player == null) return false;
 
         return player.hasPermission(permission);
@@ -54,7 +57,7 @@ public class VelocityAntiVPN extends AntiVPNPlatform<ProxyServer> {
 
     @Override
     public void sendConsoleMessage(Component message) {
-        proxy.sendMessage(message);
+        server.sendMessage(message);
     }
 
     @Override
@@ -64,6 +67,6 @@ public class VelocityAntiVPN extends AntiVPNPlatform<ProxyServer> {
 
     @Override
     public void addUpdateNotifier(AVVersion latestVersion) {
-
+        server.getEventManager().register(this, new UpdateNotifier(this.plugin, latestVersion));
     }
 }

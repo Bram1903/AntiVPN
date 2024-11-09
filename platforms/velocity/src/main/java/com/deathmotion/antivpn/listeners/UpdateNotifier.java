@@ -18,37 +18,38 @@
 
 package com.deathmotion.antivpn.listeners;
 
-import com.deathmotion.antivpn.AVBukkit;
+import com.deathmotion.antivpn.AVVelocity;
 import com.deathmotion.antivpn.models.Settings;
 import com.deathmotion.antivpn.util.AVVersion;
+import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.event.connection.PostLoginEvent;
+import com.velocitypowered.api.proxy.Player;
 import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerLoginEvent;
 
 import java.util.concurrent.TimeUnit;
 
-public class BukkitUpdateNotifier implements Listener {
-    private final AVBukkit plugin;
+public class UpdateNotifier {
+
+    private final AVVelocity plugin;
     private final Component updateComponent;
 
-    public BukkitUpdateNotifier(AVBukkit plugin, AVVersion latestVersion) {
+    public UpdateNotifier(AVVelocity plugin, AVVersion latestVersion) {
         this.plugin = plugin;
-        this.updateComponent = plugin.getAntiVPN().getMessages().updateAvailable(latestVersion);
+        this.updateComponent = plugin.getAv().getMessages().updateAvailable(latestVersion);
     }
 
-    @EventHandler
-    public void onUserLogin(PlayerLoginEvent event) {
-        final Settings settings = plugin.getAntiVPN().getConfigManager().getSettings();
+    @Subscribe
+    public void onPlayerConnect(PostLoginEvent event) {
+        final Settings settings = plugin.getAv().getConfigManager().getSettings();
         if (!settings.getUpdateChecker().isNotifyInGame()) return;
 
         Player player = event.getPlayer();
 
-        plugin.getAntiVPN().getScheduler().runAsyncTaskDelayed((o) -> {
-            if (plugin.getAntiVPN().hasPermission(player.getUniqueId(), "AntiVpn.Notify")) {
-                plugin.getAdventure().player(player).sendMessage(updateComponent);
+        plugin.getAv().getScheduler().runAsyncTaskDelayed((o) -> {
+            if (plugin.getAv().hasPermission(player.getUniqueId(), "AntiVpn.Notify")) {
+                player.sendMessage(updateComponent);
             }
         }, 2, TimeUnit.SECONDS);
     }
 }
+

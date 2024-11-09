@@ -26,7 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Getter
 public class AVBukkit extends JavaPlugin {
 
-    private final BukkitAntiVPN antiVPN = new BukkitAntiVPN(this);
+    private final BukkitAntiVPN av = new BukkitAntiVPN(this);
     private BukkitAudiences adventure;
 
     @Override
@@ -34,14 +34,14 @@ public class AVBukkit extends JavaPlugin {
         adventure = BukkitAudiences.create(this);
 
         // Initialize the platform
-        antiVPN.commonOnInitialize();
-        antiVPN.scheduler = new BukkitScheduler(this);
-        antiVPN.commonOnEnable();
+        av.commonOnInitialize();
+        av.scheduler = new BukkitScheduler(this);
+        av.commonOnEnable();
     }
 
     @Override
     public void onDisable() {
-        antiVPN.commonOnDisable();
+        av.commonOnDisable();
         adventure.close();
     }
 }

@@ -19,7 +19,7 @@ public class AVVelocity {
     @Inject
     public AVVelocity(ProxyServer server, @DataDirectory Path dataDirectory) {
         this.server = server;
-        this.av = new VelocityAntiVPN(server, dataDirectory);
+        this.av = new VelocityAntiVPN(this, server, dataDirectory);
     }
 
     @Subscribe

@@ -24,7 +24,6 @@ import com.deathmotion.antivpn.managers.ConfigManager;
 import com.deathmotion.antivpn.managers.LogManager;
 import com.deathmotion.antivpn.util.AVVersion;
 import com.deathmotion.antivpn.util.Messages;
-import com.deathmotion.antivpn.util.UpdateChecker;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 

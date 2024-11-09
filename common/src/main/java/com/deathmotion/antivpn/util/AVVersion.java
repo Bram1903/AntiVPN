@@ -273,6 +273,7 @@ public class AVVersion implements Comparable<AVVersion> {
      * that it will not have the commit attached to it.
      * Useful for accessing the string representation for metrics
      * as detailed information, such as the commit, is not required.
+     *
      * @return guaranteed string representation without commit.
      */
     public String toStringWithoutSnapshot() {

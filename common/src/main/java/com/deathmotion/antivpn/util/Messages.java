@@ -28,7 +28,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 
 public class Messages<P> {
     private final AntiVPNPlatform<P> platform;
-    
+
     public Messages(AntiVPNPlatform<P> platform) {
         this.platform = platform;
     }
