@@ -35,7 +35,7 @@ public class UpdateNotifier implements Listener {
 
     public UpdateNotifier(AVBungee plugin, AVVersion latestVersion) {
         this.plugin = plugin;
-        this.updateComponent = plugin.getAv().getMessages().updateAvailable(latestVersion);
+        this.updateComponent = plugin.getAv().getMessageCreator().updateAvailable(latestVersion);
     }
 
     @EventHandler()
@@ -47,7 +47,7 @@ public class UpdateNotifier implements Listener {
 
         plugin.getAv().getScheduler().runAsyncTaskDelayed((o) -> {
             if (plugin.getAv().hasPermission(player.getUniqueId(), "AntiVpn.Update.Notify")) {
-                plugin.getAudiences().player(player).sendMessage(updateComponent);
+                plugin.getAdventure().player(player).sendMessage(updateComponent);
             }
         }, 2, TimeUnit.SECONDS);
     }

@@ -40,6 +40,14 @@ public final class BungeeScheduler implements Scheduler {
     }
 
     @Override
+    public void runTaskDelayed(@NotNull Consumer<Object> task, long delay) {
+        // Convert delay from ticks to milliseconds (1 tick = 50 ms)
+        long delayInMillis = delay * 50;
+        ProxyServer.getInstance().getScheduler().schedule(plugin, () -> task.accept(null), delayInMillis, TimeUnit.MILLISECONDS);
+    }
+
+
+    @Override
     public void runAsyncTask(@NotNull Consumer<Object> task) {
         ProxyServer.getInstance().getScheduler().runAsync(plugin, () -> task.accept(null));
     }

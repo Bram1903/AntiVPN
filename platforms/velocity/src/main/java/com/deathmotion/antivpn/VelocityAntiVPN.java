@@ -56,11 +56,6 @@ public class VelocityAntiVPN extends AntiVPNPlatform<ProxyServer> {
     }
 
     @Override
-    public void sendConsoleMessage(Component message) {
-        server.sendMessage(message);
-    }
-
-    @Override
     public String getPluginDirectory() {
         return this.dataDirectory.toAbsolutePath().toString();
     }

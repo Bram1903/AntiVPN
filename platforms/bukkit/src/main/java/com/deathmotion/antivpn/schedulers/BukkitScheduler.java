@@ -40,6 +40,11 @@ public class BukkitScheduler implements Scheduler {
     }
 
     @Override
+    public void runTaskDelayed(@NotNull Consumer<Object> task, long delay) {
+        FoliaScheduler.getGlobalRegionScheduler().runDelayed(plugin, task, delay);
+    }
+
+    @Override
     public void runAsyncTask(@NotNull Consumer<Object> task) {
         FoliaScheduler.getAsyncScheduler().runNow(plugin, task);
     }

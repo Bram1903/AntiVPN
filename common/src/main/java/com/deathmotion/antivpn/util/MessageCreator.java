@@ -26,10 +26,10 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
-public class Messages<P> {
+public class MessageCreator<P> {
     private final AntiVPNPlatform<P> platform;
 
-    public Messages(AntiVPNPlatform<P> platform) {
+    public MessageCreator(AntiVPNPlatform<P> platform) {
         this.platform = platform;
     }
 
@@ -53,5 +53,9 @@ public class Messages<P> {
                 .append(Component.newline())
                 .append(Component.newline())
                 .append(Component.text("If you believe this is a mistake, please contact a server administrator.", NamedTextColor.GRAY));
+    }
+
+    public Component vpnDetected(String username) {
+        return Component.text(username + " tried to join with a VPN.", NamedTextColor.RED);
     }
 }

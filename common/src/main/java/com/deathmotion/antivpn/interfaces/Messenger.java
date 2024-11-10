@@ -18,19 +18,20 @@
 
 package com.deathmotion.antivpn.interfaces;
 
-import org.jetbrains.annotations.NotNull;
+import net.kyori.adventure.text.Component;
 
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
+import java.util.UUID;
 
-public interface Scheduler {
-    void runTask(@NotNull Consumer<Object> task);
+public interface Messenger {
+    void message(UUID uuid, Component message);
 
-    void runTaskDelayed(@NotNull Consumer<Object> task, long delay);
+    void broadcast(Component message);
 
-    void runAsyncTask(@NotNull Consumer<Object> task);
+    void broadcast(Component message, String permission);
 
-    void runAsyncTaskDelayed(@NotNull Consumer<Object> task, long delay, @NotNull TimeUnit timeUnit);
+    void broadcastPlayers(Component message);
 
-    void runAsyncTaskAtFixedRate(@NotNull Consumer<Object> task, long delay, long period, @NotNull TimeUnit timeUnit);
+    void broadcastPlayers(Component message, String permission);
+
+    void console(Component message);
 }

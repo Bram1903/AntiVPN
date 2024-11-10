@@ -16,21 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.antivpn.interfaces;
+package com.deathmotion.antivpn.models;
 
-import org.jetbrains.annotations.NotNull;
+import com.deathmotion.antivpn.AntiVPNPlatform;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import net.kyori.adventure.text.Component;
 
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
+import java.net.InetAddress;
+import java.util.UUID;
 
-public interface Scheduler {
-    void runTask(@NotNull Consumer<Object> task);
+@AllArgsConstructor
+@Data
+public class CommonUser<P> {
+    private final AntiVPNPlatform<P> platform;
+    private final UUID uuid;
+    private final String username;
+    private final InetAddress address;
 
-    void runTaskDelayed(@NotNull Consumer<Object> task, long delay);
+    public void sendMessage(Component message) {
+        platform.getMessenger().message(uuid, message);
+    }
 
-    void runAsyncTask(@NotNull Consumer<Object> task);
-
-    void runAsyncTaskDelayed(@NotNull Consumer<Object> task, long delay, @NotNull TimeUnit timeUnit);
-
-    void runAsyncTaskAtFixedRate(@NotNull Consumer<Object> task, long delay, long period, @NotNull TimeUnit timeUnit);
+    public boolean hasPermission(String permission) {
+        return platform.hasPermission(uuid, permission);
+    }
 }

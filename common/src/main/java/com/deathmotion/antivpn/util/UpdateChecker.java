@@ -20,6 +20,7 @@ package com.deathmotion.antivpn.util;
 
 import com.deathmotion.antivpn.AntiVPNPlatform;
 import com.deathmotion.antivpn.data.Constants;
+import com.deathmotion.antivpn.interfaces.Messenger;
 import com.deathmotion.antivpn.managers.LogManager;
 import com.deathmotion.antivpn.models.Settings;
 import com.google.gson.Gson;
@@ -38,11 +39,13 @@ public class UpdateChecker<P> {
     private final AntiVPNPlatform<P> platform;
     private final Settings settings;
     private final LogManager<P> logManager;
+    private final Messenger messenger;
 
     public UpdateChecker(AntiVPNPlatform<P> platform) {
         this.platform = platform;
         this.settings = platform.getConfigManager().getSettings();
         this.logManager = platform.getLogManager();
+        this.messenger = platform.getMessenger();
 
         if (settings.getUpdateChecker().isEnabled()) {
             checkForUpdate();
@@ -91,7 +94,7 @@ public class UpdateChecker<P> {
 
     private void notifyUpdateAvailable(AVVersion currentVersion, AVVersion newVersion) {
         if (settings.getUpdateChecker().isPrintToConsole()) {
-            platform.sendConsoleMessage(Component.text("[AntiVPN] ", NamedTextColor.DARK_GREEN)
+            messenger.console(Component.text("[AntiVPN] ", NamedTextColor.DARK_GREEN)
                     .append(Component.text("Update available! ", NamedTextColor.BLUE))
                     .append(Component.text("Current version: ", NamedTextColor.WHITE))
                     .append(Component.text(currentVersion.toString(), NamedTextColor.GOLD))
@@ -105,7 +108,7 @@ public class UpdateChecker<P> {
 
     private void notifyOnDevBuild(AVVersion currentVersion, AVVersion newVersion) {
         if (settings.getUpdateChecker().isPrintToConsole()) {
-            platform.sendConsoleMessage(Component.text("[AntiVPN] ", NamedTextColor.DARK_GREEN)
+            messenger.console(Component.text("[AntiVPN] ", NamedTextColor.DARK_GREEN)
                     .append(Component.text("Development build detected. ", NamedTextColor.WHITE))
                     .append(Component.text("Current version: ", NamedTextColor.WHITE))
                     .append(Component.text(currentVersion.toString(), NamedTextColor.AQUA))

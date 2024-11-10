@@ -48,11 +48,6 @@ public class BukkitAntiVPN extends AntiVPNPlatform<JavaPlugin> {
     }
 
     @Override
-    public void sendConsoleMessage(Component message) {
-        plugin.getAdventure().console().sendMessage(message);
-    }
-
-    @Override
     public String getPluginDirectory() {
         return this.plugin.getDataFolder().getAbsolutePath();
     }

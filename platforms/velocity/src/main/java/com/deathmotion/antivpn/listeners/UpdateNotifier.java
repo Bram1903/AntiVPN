@@ -35,7 +35,7 @@ public class UpdateNotifier {
 
     public UpdateNotifier(AVVelocity plugin, AVVersion latestVersion) {
         this.plugin = plugin;
-        this.updateComponent = plugin.getAv().getMessages().updateAvailable(latestVersion);
+        this.updateComponent = plugin.getAv().getMessageCreator().updateAvailable(latestVersion);
     }
 
     @Subscribe

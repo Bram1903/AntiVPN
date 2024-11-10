@@ -19,12 +19,13 @@
 package com.deathmotion.antivpn;
 
 
+import com.deathmotion.antivpn.interfaces.Messenger;
 import com.deathmotion.antivpn.interfaces.Scheduler;
 import com.deathmotion.antivpn.managers.ConfigManager;
 import com.deathmotion.antivpn.managers.LogManager;
 import com.deathmotion.antivpn.services.ConnectionService;
 import com.deathmotion.antivpn.util.AVVersion;
-import com.deathmotion.antivpn.util.Messages;
+import com.deathmotion.antivpn.util.MessageCreator;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 
@@ -35,8 +36,9 @@ public abstract class AntiVPNPlatform<P> {
     protected ConfigManager<P> configManager;
     protected LogManager<P> logManager;
 
-    protected Messages<P> messages;
     protected Scheduler scheduler;
+    protected Messenger messenger;
+    protected MessageCreator<P> messageCreator;
 
     protected ConnectionService<P> connectionService;
 
@@ -52,7 +54,7 @@ public abstract class AntiVPNPlatform<P> {
      * Called when the platform is enabled.
      */
     public void commonOnEnable() {
-        messages = new Messages<>(this);
+        messageCreator = new MessageCreator<>(this);
         connectionService = new ConnectionService<>(this);
 
         // TODO: Uncomment this when the first version is released
@@ -80,13 +82,6 @@ public abstract class AntiVPNPlatform<P> {
      * @return true if the entity has the permission, false otherwise.
      */
     public abstract boolean hasPermission(UUID sender, String permission);
-
-    /**
-     * Sends a console message.
-     *
-     * @param message The message to send.
-     */
-    public abstract void sendConsoleMessage(Component message);
 
     /**
      * Gets the plugin directory.

@@ -20,6 +20,7 @@ package com.deathmotion.antivpn;
 
 import com.deathmotion.antivpn.listeners.PlayerJoin;
 import com.deathmotion.antivpn.schedulers.BukkitScheduler;
+import com.deathmotion.antivpn.services.MessengerService;
 import lombok.Getter;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
@@ -38,6 +39,7 @@ public class AVBukkit extends JavaPlugin {
         // Initialize the platform
         av.commonOnInitialize();
         av.scheduler = new BukkitScheduler(this);
+        av.messenger = new MessengerService(this);
         av.commonOnEnable();
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(this), this);

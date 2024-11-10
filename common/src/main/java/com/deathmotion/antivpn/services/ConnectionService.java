@@ -20,11 +20,10 @@ package com.deathmotion.antivpn.services;
 
 import com.deathmotion.antivpn.AntiVPNPlatform;
 import com.deathmotion.antivpn.models.AddressInfo;
+import com.deathmotion.antivpn.models.CommonUser;
 import com.deathmotion.antivpn.storage.StorageProvider;
 
-import java.net.InetAddress;
 import java.util.Optional;
-import java.util.UUID;
 
 public class ConnectionService<P> {
 
@@ -38,39 +37,45 @@ public class ConnectionService<P> {
         this.apiService = new APIService<>(platform);
     }
 
-    public void handleLogin(UUID uuid, InetAddress address) {
+    public void handleLogin(CommonUser<P> user) {
         platform.getScheduler().runAsyncTask((o) -> {
-            if (!isValidIp(uuid, address)) {
+            if (!isValidIp(user)) {
                 return;
             }
 
-            AddressInfo addressInfo = Optional.ofNullable(storageProvider.getAddressInfo(address.getHostAddress()))
+            AddressInfo addressInfo = Optional.ofNullable(storageProvider.getAddressInfo(user.getAddress().getHostAddress()))
                     .orElseGet(() -> {
-                        AddressInfo newAddressInfo = apiService.getAddressInfo(address.getHostAddress());
+                        AddressInfo newAddressInfo = apiService.getAddressInfo(user.getAddress().getHostAddress());
                         if (newAddressInfo != null) {
-                            storageProvider.putAddressInfo(address.getHostAddress(), newAddressInfo);
+                            storageProvider.putAddressInfo(user.getAddress().getHostAddress(), newAddressInfo);
                         }
                         return newAddressInfo;
                     });
 
-            if (addressInfo == null || platform.hasPermission(uuid, "AntiVPN.Bypass")) {
+            if (addressInfo == null || platform.hasPermission(user.getUuid(), "AntiVPN.Bypass")) {
                 return;
             }
 
-            if (isVPN(addressInfo)) {
-                platform.getScheduler().runTask((o1) -> platform.kickPlayer(uuid, platform.getMessages().vpnDetected()));
+            if (!isVPN(addressInfo)) {
+                platform.getScheduler().runTask((o1) -> {
+                    platform.kickPlayer(user.getUuid(), platform.getMessageCreator().vpnDetected());
+                });
+
+                platform.getMessenger().broadcast(platform.getMessageCreator().vpnDetected(user.getUsername()), "AntiVPN.Notify");
             }
         });
     }
 
-    private boolean isValidIp(UUID uuid, InetAddress address) {
-        if (address.isLoopbackAddress() || address.isAnyLocalAddress()) {
-            platform.getLogManager().warn("Player " + uuid + " joined with a loopback or unspecified local address - " + address.getHostAddress());
+    private boolean isValidIp(CommonUser<P> user) {
+        // Check if the address is loop back (e.g., 127.0.0.1)
+        if (user.getAddress().isLoopbackAddress() || user.getAddress().isAnyLocalAddress()) {
+            platform.getLogManager().warn("Player " + user.getUsername() + " joined with a loopback or unspecified local address - " + user.getAddress().getHostAddress());
             return false;
         }
 
-        if (address.isSiteLocalAddress()) {
-            platform.getLogManager().warn("Player " + uuid + " joined with a site-local address - " + address.getHostAddress());
+        // Check if the address is within a local network (e.g., 192.168.x.x, 10.x.x.x, etc.)
+        if (user.getAddress().isSiteLocalAddress()) {
+            platform.getLogManager().warn("Player " + user.getUsername() + " joined with a site-local address - " + user.getAddress().getHostAddress());
             return false;
         }
 

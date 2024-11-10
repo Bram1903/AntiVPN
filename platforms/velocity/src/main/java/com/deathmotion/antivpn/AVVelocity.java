@@ -2,6 +2,7 @@ package com.deathmotion.antivpn;
 
 import com.deathmotion.antivpn.listeners.PlayerJoin;
 import com.deathmotion.antivpn.schedulers.VelocityScheduler;
+import com.deathmotion.antivpn.services.MessengerService;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -27,6 +28,7 @@ public class AVVelocity {
     public void onProxyInitialization(ProxyInitializeEvent ignoredEvent) {
         av.commonOnInitialize();
         av.scheduler = new VelocityScheduler(this, this.server);
+        av.messenger = new MessengerService(this);
         av.commonOnEnable();
 
         server.getEventManager().register(this, new PlayerJoin(this));

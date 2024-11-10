@@ -8,6 +8,12 @@ api-version: '1.13'
 folia-supported: true
 load: POSTWORLD
 permissions:
+  AntiVpn.Bypass:
+    description: Bypass the AntiVPN check.
+    default: op
+  AntiVpn.Notify:
+    description: Notify a player when they are using a VPN.
+    default: op
   AntiVpn.Update.Notify:
     description: Notify a player when an update is available.
     default: op

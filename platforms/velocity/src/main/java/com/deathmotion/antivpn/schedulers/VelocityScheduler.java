@@ -46,6 +46,17 @@ public final class VelocityScheduler implements Scheduler {
     }
 
     @Override
+    public void runTaskDelayed(@NotNull Consumer<Object> task, long delay) {
+        // Convert delay from ticks to milliseconds (1 tick = 50 ms)
+        long delayInMillis = delay * 50;
+
+        this.proxy.getScheduler()
+                .buildTask(this.plugin, () -> task.accept(null))
+                .delay(delayInMillis, TimeUnit.MILLISECONDS)
+                .schedule();
+    }
+
+    @Override
     public void runAsyncTask(@NotNull Consumer<Object> task) {
         this.proxy.getScheduler()
                 .buildTask(this.plugin, () -> task.accept(null))

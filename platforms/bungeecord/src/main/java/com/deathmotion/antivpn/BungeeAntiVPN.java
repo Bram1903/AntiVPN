@@ -52,11 +52,6 @@ public class BungeeAntiVPN extends AntiVPNPlatform<Plugin> {
     }
 
     @Override
-    public void sendConsoleMessage(Component message) {
-        plugin.getAudiences().console().sendMessage(message);
-    }
-
-    @Override
     public String getPluginDirectory() {
         return this.plugin.getDataFolder().getAbsolutePath();
     }

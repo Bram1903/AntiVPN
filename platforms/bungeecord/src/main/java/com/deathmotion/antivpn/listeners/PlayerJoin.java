@@ -19,24 +19,26 @@
 package com.deathmotion.antivpn.listeners;
 
 import com.deathmotion.antivpn.AVBungee;
+import com.deathmotion.antivpn.BungeeAntiVPN;
+import com.deathmotion.antivpn.models.CommonUser;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 import java.net.InetAddress;
-import java.util.UUID;
 
 public class PlayerJoin implements Listener {
-    private final AVBungee plugin;
+    private final BungeeAntiVPN av;
 
     public PlayerJoin(AVBungee plugin) {
-        this.plugin = plugin;
+        this.av = plugin.getAv();
     }
 
     @EventHandler
     public void onPreJoin(PostLoginEvent event) {
-        UUID uuid = event.getPlayer().getUniqueId();
+        ProxiedPlayer player = event.getPlayer();
         InetAddress address = event.getPlayer().getPendingConnection().getVirtualHost().getAddress();
-        plugin.getAv().getConnectionService().handleLogin(uuid, address);
+        av.getConnectionService().handleLogin(new CommonUser<>(av, player.getUniqueId(), player.getName(), address));
     }
 }
