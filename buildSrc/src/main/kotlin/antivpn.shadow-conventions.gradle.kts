@@ -17,8 +17,6 @@ tasks {
         archiveFileName = "AntiVPN-${project.name}-${rootProject.ext["versionNoHash"]}.jar"
         archiveClassifier = null
 
-        relocate("net.jodah", "com.deathmotion.antivpn.shaded")
-
         mergeServiceFiles()
     }
 

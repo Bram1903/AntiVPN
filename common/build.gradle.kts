@@ -12,6 +12,10 @@ dependencies {
 }
 
 tasks {
+    shadowJar {
+        relocate("net.jodah", "com.deathmotion.antivpn.shaded")
+    }
+
     withType<JavaCompile> {
         dependsOn(generateVersionsFile)
     }
