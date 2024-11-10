@@ -21,6 +21,7 @@ package com.deathmotion.antivpn.services;
 import com.deathmotion.antivpn.AntiVPNPlatform;
 import com.deathmotion.antivpn.models.AddressInfo;
 import com.deathmotion.antivpn.models.CommonUser;
+import com.deathmotion.antivpn.models.Settings;
 import com.deathmotion.antivpn.storage.StorageProvider;
 
 import java.util.Optional;
@@ -56,7 +57,13 @@ public class ConnectionService<P> {
                 return;
             }
 
-            if (!isVPN(addressInfo)) {
+            if (isGeoBlocked(addressInfo.getGeo().getCountryCode())) {
+                String country = addressInfo.getGeo().getCountry();
+                user.kickPlayer(platform.getMessageCreator().geoBlocked(country));
+                platform.getMessenger().broadcast(platform.getMessageCreator().geoBlocked(country), "AntiVPN.Notify");
+            }
+
+            if (isVPN(addressInfo)) {
                 user.kickPlayer(platform.getMessageCreator().vpnDetected());
                 platform.getMessenger().broadcast(platform.getMessageCreator().vpnDetected(user.getUsername()), "AntiVPN.Notify");
             }
@@ -81,6 +88,17 @@ public class ConnectionService<P> {
 
     private boolean isVPN(AddressInfo addressInfo) {
         return addressInfo.isVpn() || addressInfo.isDataCenter() || addressInfo.isOpenProxy();
+    }
+
+    private boolean isGeoBlocked(String countryCode) {
+        Settings.GeoBlocking geoBlocking = platform.getConfigManager().getSettings().getGeoBlocking();
+
+        if (!geoBlocking.isEnabled()) {
+            return false;
+        }
+
+        boolean isCountryInList = geoBlocking.getCountries().contains(countryCode);
+        return isCountryInList == geoBlocking.isBlockCountries();
     }
 }
 

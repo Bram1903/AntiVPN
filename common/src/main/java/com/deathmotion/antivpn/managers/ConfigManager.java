@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public class ConfigManager<P> {
@@ -89,11 +91,30 @@ public class ConfigManager<P> {
 
     private void setConfigOptions(Map<String, Object> yamlData, Settings settings) {
         settings.setDebug(getBoolean(yamlData, "debug.enabled", false));
+
+        Settings.GeoBlocking geoBlocking = new Settings.GeoBlocking();
+        geoBlocking.setEnabled(getBoolean(yamlData, "geo-blocking.enabled", false));
+        geoBlocking.setBlockCountries(getBoolean(yamlData, "geo-blocking.block-countries", true));
+        geoBlocking.setCountries(getStringList(yamlData, "geo-blocking.countries"));
+        settings.setGeoBlocking(geoBlocking);
     }
 
     private boolean getBoolean(Map<String, Object> yamlData, String key, boolean defaultValue) {
         Object value = findNestedValue(yamlData, key.split("\\."), defaultValue);
         return value instanceof Boolean ? (Boolean) value : defaultValue;
+    }
+
+    private List<String> getStringList(Map<String, Object> yamlData, String key) {
+        Object value = findNestedValue(yamlData, key.split("\\."), null);
+        if (value instanceof List) {
+            return (List<String>) value;
+        }
+        return Collections.emptyList();
+    }
+
+    private String getString(Map<String, Object> yamlData, String key, String defaultValue) {
+        Object value = findNestedValue(yamlData, key.split("\\."), defaultValue);
+        return value instanceof String ? (String) value : defaultValue;
     }
 
     private Object findNestedValue(Map<String, Object> yamlData, String[] keys, Object defaultValue) {

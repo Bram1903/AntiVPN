@@ -21,6 +21,8 @@ package com.deathmotion.antivpn.models;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class Settings {
@@ -28,11 +30,21 @@ public class Settings {
 
     private UpdateChecker UpdateChecker = new UpdateChecker();
 
+    private GeoBlocking GeoBlocking = new GeoBlocking();
+
     @Getter
     @Setter
     public static class UpdateChecker {
         private boolean Enabled = true;
         private boolean PrintToConsole = true;
         private boolean NotifyInGame = true;
+    }
+
+    @Getter
+    @Setter
+    public static class GeoBlocking {
+        private boolean Enabled = false;
+        private boolean BlockCountries = true;
+        private List<String> Countries;
     }
 }

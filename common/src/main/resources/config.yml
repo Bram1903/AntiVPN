@@ -10,3 +10,17 @@
 debug:
   # If enabled, the plugin will print debug messages to players with the permission "AntiVPN.Debug".
   enabled: false
+
+geo-blocking:
+  # If enabled, the plugin will block connections from certain countries.
+  enabled: false
+
+  # If enabled, the plugin will block connections from countries in the list, otherwise it will only allow connections from countries in the list.
+  block-countries: true
+
+  # The list of countries to block or allow. The country codes must be in ISO 3166-1 alpha-2 format.
+  countries:
+    - NL
+
+  # The message to display to players when they are blocked.
+  blocked-message: "&cYou are not allowed to connect from your country."

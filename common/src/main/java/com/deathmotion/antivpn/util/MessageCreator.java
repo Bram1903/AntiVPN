@@ -44,6 +44,17 @@ public class MessageCreator<P> {
                 .append(Component.text("!", NamedTextColor.GREEN));
     }
 
+    public Component geoBlocked(String country) {
+        return Component.text("Geo-Blocked", NamedTextColor.RED)
+                .append(Component.newline())
+                .append(Component.newline())
+                .append(Component.text(String.format("Players from %s are not allowed to join this server.", country), NamedTextColor.GOLD))
+                .append(Component.newline())
+                .append(Component.newline())
+                .append(Component.newline())
+                .append(Component.text("If you believe this is a mistake, please contact a server administrator.", NamedTextColor.GRAY));
+    }
+
     public Component vpnDetected() {
         return Component.text("VPN Detected", NamedTextColor.RED)
                 .append(Component.newline())
