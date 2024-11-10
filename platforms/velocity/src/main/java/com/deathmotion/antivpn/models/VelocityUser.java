@@ -16,26 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.deathmotion.antivpn.listeners;
+package com.deathmotion.antivpn.models;
 
-import com.deathmotion.antivpn.AVBungee;
-import com.deathmotion.antivpn.BungeeAntiVPN;
-import com.deathmotion.antivpn.models.BungeeUser;
-import net.md_5.bungee.api.event.PostLoginEvent;
-import net.md_5.bungee.api.plugin.Listener;
-import net.md_5.bungee.event.EventHandler;
+import com.velocitypowered.api.proxy.Player;
+import net.kyori.adventure.text.Component;
 
-public class PlayerJoin implements Listener {
-    private final AVBungee plugin;
-    private final BungeeAntiVPN av;
+public class VelocityUser extends CommonUser {
 
-    public PlayerJoin(AVBungee plugin) {
-        this.plugin = plugin;
-        this.av = plugin.getAv();
+    private final Player player;
+
+    public VelocityUser(Player player) {
+        super(player.getUniqueId(), player.getUsername(), player.getRemoteAddress().getAddress());
+        this.player = player;
     }
 
-    @EventHandler
-    public void onPreJoin(PostLoginEvent event) {
-        av.getConnectionService().handleLogin(new BungeeUser(plugin, event.getPlayer()));
+    @Override
+    public void sendMessage(Component message) {
+        player.sendMessage(message);
+    }
+
+    @Override
+    public boolean hasPermission(String permission) {
+        return player.hasPermission(permission);
+    }
+
+    @Override
+    public void kickPlayer(Component reason) {
+        player.disconnect(reason);
     }
 }

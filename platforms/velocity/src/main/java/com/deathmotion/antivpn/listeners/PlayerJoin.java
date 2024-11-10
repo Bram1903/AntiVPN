@@ -20,12 +20,9 @@ package com.deathmotion.antivpn.listeners;
 
 import com.deathmotion.antivpn.AVVelocity;
 import com.deathmotion.antivpn.VelocityAntiVPN;
-import com.deathmotion.antivpn.models.CommonUser;
+import com.deathmotion.antivpn.models.VelocityUser;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.PostLoginEvent;
-import com.velocitypowered.api.proxy.Player;
-
-import java.net.InetAddress;
 
 public class PlayerJoin {
     private final VelocityAntiVPN av;
@@ -36,8 +33,6 @@ public class PlayerJoin {
 
     @Subscribe
     public void onPlayerConnect(PostLoginEvent event) {
-        Player player = event.getPlayer();
-        InetAddress address = player.getRemoteAddress().getAddress();
-        av.getConnectionService().handleLogin(new CommonUser<>(av, player.getUniqueId(), player.getUsername(), address));
+        av.getConnectionService().handleLogin(new VelocityUser(event.getPlayer()));
     }
 }

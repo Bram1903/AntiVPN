@@ -20,26 +20,22 @@ package com.deathmotion.antivpn.listeners;
 
 import com.deathmotion.antivpn.AVBukkit;
 import com.deathmotion.antivpn.BukkitAntiVPN;
-import com.deathmotion.antivpn.models.CommonUser;
-import org.bukkit.entity.Player;
+import com.deathmotion.antivpn.models.BukkitUser;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.net.InetAddress;
-import java.util.Objects;
-
 public class PlayerJoin implements Listener {
+    private final AVBukkit plugin;
     private final BukkitAntiVPN av;
 
     public PlayerJoin(AVBukkit plugin) {
+        this.plugin = plugin;
         this.av = plugin.getAv();
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        InetAddress address = Objects.requireNonNull(player.getAddress()).getAddress();
-        av.getConnectionService().handleLogin(new CommonUser<>(av, player.getUniqueId(), player.getName(), address));
+        av.getConnectionService().handleLogin(new BukkitUser(plugin, event.getPlayer()));
     }
 }

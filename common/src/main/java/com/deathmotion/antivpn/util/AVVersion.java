@@ -101,9 +101,8 @@ public class AVVersion implements Comparable<AVVersion> {
      *
      * @param version the version string (e.g., "1.8.9-SNAPSHOT").
      * @throws IllegalArgumentException if the version string format is incorrect.
-     * @deprecated use {@link #fromString(String)} instead.
      */
-    public AVVersion(@NotNull final String version) {
+    public static AVVersion fromString(@NotNull final String version) {
         String versionWithoutSnapshot = version.replace("-SNAPSHOT", "");
         String[] largeParts = versionWithoutSnapshot.split("\\+");
         String[] parts = largeParts.length > 0 ? largeParts[0].split("\\.") : null;
@@ -113,21 +112,13 @@ public class AVVersion implements Comparable<AVVersion> {
             throw new IllegalArgumentException("Version string must be in the format 'major.minor[.patch][+commit][-SNAPSHOT]', found '" + version + "' instead");
         }
 
-        this.major = Integer.parseInt(parts[0]);
-        this.minor = Integer.parseInt(parts[1]);
-        this.patch = parts.length > 2 ? Integer.parseInt(parts[2]) : 0;
-        this.snapshot = version.contains("-SNAPSHOT");
-        this.snapshotCommit = largeParts.length > 1 ? largeParts[1] : null;
-    }
+        int major = Integer.parseInt(parts[0]);
+        int minor = Integer.parseInt(parts[1]);
+        int patch = parts.length > 2 ? Integer.parseInt(parts[2]) : 0;
+        boolean snapshot = version.contains("-SNAPSHOT");
+        String snapshotCommit = largeParts.length > 1 ? largeParts[1] : null;
 
-    /**
-     * Constructs a {@link AVVersion} instance from a version string.
-     *
-     * @param version the version string (e.g., "1.8.9-SNAPSHOT").
-     * @throws IllegalArgumentException if the version string format is incorrect.
-     */
-    public static AVVersion fromString(@NotNull final String version) {
-        return new AVVersion(version);
+        return new AVVersion(major, minor, patch, snapshot, snapshotCommit);
     }
 
     /**

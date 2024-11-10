@@ -18,7 +18,6 @@
 
 package com.deathmotion.antivpn.models;
 
-import com.deathmotion.antivpn.AntiVPNPlatform;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.kyori.adventure.text.Component;
@@ -28,17 +27,14 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @Data
-public class CommonUser<P> {
-    private final AntiVPNPlatform<P> platform;
+public abstract class CommonUser {
     private final UUID uuid;
     private final String username;
     private final InetAddress address;
 
-    public void sendMessage(Component message) {
-        platform.getMessenger().message(uuid, message);
-    }
+    public abstract void sendMessage(Component message);
 
-    public boolean hasPermission(String permission) {
-        return platform.hasPermission(uuid, permission);
-    }
+    public abstract boolean hasPermission(String permission);
+
+    public abstract void kickPlayer(Component reason);
 }

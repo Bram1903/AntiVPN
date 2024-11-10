@@ -37,7 +37,7 @@ public class ConnectionService<P> {
         this.apiService = new APIService<>(platform);
     }
 
-    public void handleLogin(CommonUser<P> user) {
+    public void handleLogin(CommonUser user) {
         platform.getScheduler().runAsyncTask((o) -> {
             if (!isValidIp(user)) {
                 return;
@@ -52,21 +52,18 @@ public class ConnectionService<P> {
                         return newAddressInfo;
                     });
 
-            if (addressInfo == null || platform.hasPermission(user.getUuid(), "AntiVPN.Bypass")) {
+            if (addressInfo == null || user.hasPermission("AntiVPN.Bypass")) {
                 return;
             }
 
             if (!isVPN(addressInfo)) {
-                platform.getScheduler().runTask((o1) -> {
-                    platform.kickPlayer(user.getUuid(), platform.getMessageCreator().vpnDetected());
-                });
-
+                user.kickPlayer(platform.getMessageCreator().vpnDetected());
                 platform.getMessenger().broadcast(platform.getMessageCreator().vpnDetected(user.getUsername()), "AntiVPN.Notify");
             }
         });
     }
 
-    private boolean isValidIp(CommonUser<P> user) {
+    private boolean isValidIp(CommonUser user) {
         // Check if the address is loop back (e.g., 127.0.0.1)
         if (user.getAddress().isLoopbackAddress() || user.getAddress().isAnyLocalAddress()) {
             platform.getLogManager().warn("Player " + user.getUsername() + " joined with a loopback or unspecified local address - " + user.getAddress().getHostAddress());
