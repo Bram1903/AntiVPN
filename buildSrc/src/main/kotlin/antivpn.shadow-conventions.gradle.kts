@@ -19,6 +19,7 @@ tasks {
 
         relocate("org.bstats", "com.deathmotion.antivpn.shaded.bstats")
         relocate("net.kyori", "com.deathmotion.antivpn.shaded.adventure")
+        relocate("net.jodah", "com.deathmotion.antivpn.shaded")
 
         mergeServiceFiles()
         minimize()
