@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.expiringmap)
+    compileShadowOnly(libs.expiringmap)
     compileOnly(libs.adventure.api)
     compileOnly(libs.snakeyaml)
     compileOnly(libs.gson)

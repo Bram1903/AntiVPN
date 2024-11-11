@@ -10,15 +10,12 @@ repositories {
 
 dependencies {
     shadow(project(":common"))
-    shadow(libs.adventure.bukkit)
+    compileShadowOnly(libs.adventure.bukkit)
+    compileShadowOnly(libs.bstats.bukkit)
     compileOnly(libs.paper)
 }
 
 tasks {
-    shadowJar {
-        relocate("net.kyori", "com.deathmotion.antivpn.shaded")
-    }
-
     // 1.8.8 - 1.16.5 = Java 8
     // 1.17           = Java 16
     // 1.18 - 1.20.4  = Java 17

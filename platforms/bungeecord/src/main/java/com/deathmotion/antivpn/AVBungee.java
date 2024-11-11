@@ -1,11 +1,14 @@
 package com.deathmotion.antivpn;
 
+import com.deathmotion.antivpn.data.Constants;
 import com.deathmotion.antivpn.listeners.PlayerJoin;
 import com.deathmotion.antivpn.schedulers.BungeeScheduler;
 import com.deathmotion.antivpn.services.MessengerService;
 import lombok.Getter;
 import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
 import net.md_5.bungee.api.plugin.Plugin;
+import org.bstats.bungeecord.Metrics;
+import org.bstats.charts.SimplePie;
 
 @Getter
 public final class AVBungee extends Plugin {
@@ -27,5 +30,10 @@ public final class AVBungee extends Plugin {
     public void onDisable() {
         av.commonOnDisable();
         adventure.close();
+    }
+
+    private void enableMetrics() {
+        Metrics metrics = new Metrics(this, Constants.bStatsPluginId);
+        metrics.addCustomChart(new SimplePie("antivpn_platform", () -> "BungeeCord"));
     }
 }

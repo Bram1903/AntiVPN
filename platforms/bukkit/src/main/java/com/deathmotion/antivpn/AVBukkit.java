@@ -18,11 +18,14 @@
 
 package com.deathmotion.antivpn;
 
+import com.deathmotion.antivpn.data.Constants;
 import com.deathmotion.antivpn.listeners.PlayerJoin;
 import com.deathmotion.antivpn.schedulers.BukkitScheduler;
 import com.deathmotion.antivpn.services.MessengerService;
 import lombok.Getter;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -43,11 +46,17 @@ public class AVBukkit extends JavaPlugin {
         av.commonOnEnable();
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(this), this);
+        enableMetrics();
     }
 
     @Override
     public void onDisable() {
         av.commonOnDisable();
         adventure.close();
+    }
+
+    private void enableMetrics() {
+        Metrics metrics = new Metrics(this, Constants.bStatsPluginId);
+        metrics.addCustomChart(new SimplePie("antivpn_platform", () -> "Bukkit"));
     }
 }

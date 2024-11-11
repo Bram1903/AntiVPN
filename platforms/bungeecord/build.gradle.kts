@@ -12,13 +12,7 @@ repositories {
 
 dependencies {
     shadow(project(":common"))
-    shadow(libs.adventure.bungee)
+    compileShadowOnly(libs.adventure.bungee)
+    compileShadowOnly(libs.bstats.bungeecord)
     compileOnly(libs.bungeecord)
 }
-
-tasks {
-    shadowJar {
-        relocate("net.kyori", "com.deathmotion.antivpn.shaded")
-    }
-}
-

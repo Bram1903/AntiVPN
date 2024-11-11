@@ -22,5 +22,6 @@ public class Constants {
     public static final String GITHUB_API_URL = "https://api.github.com/repos/Bram1903/AntiVPN/releases/latest";
     public static final String GITHUB_URL = "https://github.com/Bram1903/AntiVPN";
     public static final String SPIGOT_URL = "https://www.spigotmc.org/resources/TBD/";
+    public static final int bStatsPluginId = 23874;
 }
 

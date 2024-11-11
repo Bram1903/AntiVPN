@@ -17,7 +17,11 @@ tasks {
         archiveFileName = "AntiVPN-${project.name}-${rootProject.ext["versionNoHash"]}.jar"
         archiveClassifier = null
 
+        relocate("org.bstats", "com.deathmotion.antivpn.shaded.bstats")
+        relocate("net.kyori", "com.deathmotion.antivpn.shaded.adventure")
+
         mergeServiceFiles()
+        minimize()
     }
 
     assemble {

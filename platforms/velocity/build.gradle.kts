@@ -13,6 +13,7 @@ repositories {
 
 dependencies {
     shadow(project(":common"))
+    compileShadowOnly(libs.bstats.velocity)
     compileOnly(libs.velocity)
     annotationProcessor(libs.velocity)
 }
