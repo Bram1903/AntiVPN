@@ -91,14 +91,6 @@ public abstract class AntiVPNPlatform<P> {
     public abstract String getPluginDirectory();
 
     /**
-     * Kicks a player.
-     *
-     * @param uuid   The UUID of the player to kick.
-     * @param reason The reason for the kick.
-     */
-    public abstract void kickPlayer(UUID uuid, Component reason);
-
-    /**
      * Adds an update notifier.
      *
      * @param latestVersion The latest version.

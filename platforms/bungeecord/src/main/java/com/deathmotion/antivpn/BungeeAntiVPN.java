@@ -57,14 +57,6 @@ public class BungeeAntiVPN extends AntiVPNPlatform<Plugin> {
     }
 
     @Override
-    public void kickPlayer(UUID uuid, Component reason) {
-        ProxiedPlayer player = ProxyServer.getInstance().getPlayer(uuid);
-        if (player != null) {
-            player.disconnect(LegacyComponentSerializer.legacySection().serialize(reason));
-        }
-    }
-
-    @Override
     public void addUpdateNotifier(AVVersion latestVersion) {
         ProxyServer.getInstance().getPluginManager().registerListener(this.plugin, new UpdateNotifier(this.plugin, latestVersion));
     }

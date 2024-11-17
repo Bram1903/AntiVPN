@@ -42,11 +42,9 @@ tasks {
 
         downloadPlugins {
             from(sharedPlugins)
-            url("https://ci.ender.zone/job/EssentialsX/lastSuccessfulBuild/artifact/jars/EssentialsX-2.21.0-dev+128-0b49421.jar")
+            url("https://ci.ender.zone/job/EssentialsX/lastSuccessfulBuild/artifact/jars/EssentialsX-2.21.0-dev+129-2ac37d8.jar")
             url("https://ci.lucko.me/job/spark/462/artifact/spark-bukkit/build/libs/spark-1.10.116-bukkit.jar")
             url("https://download.luckperms.net/1560/bukkit/loader/LuckPerms-Bukkit-5.4.145.jar")
-            url("https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar")
-            url("https://github.com/TCPShield/RealIP/releases/download/2.8.1/TCPShield-2.8.1.jar")
         }
 
         jvmArgs = jvmArgsExternal

@@ -53,14 +53,6 @@ public class BukkitAntiVPN extends AntiVPNPlatform<JavaPlugin> {
     }
 
     @Override
-    public void kickPlayer(UUID uuid, Component reason) {
-        Player player = Bukkit.getPlayer(uuid);
-        if (player != null) {
-            player.kickPlayer(LegacyComponentSerializer.legacySection().serialize(reason));
-        }
-    }
-
-    @Override
     public void addUpdateNotifier(AVVersion latestVersion) {
         Bukkit.getPluginManager().registerEvents(new UpdateNotifier(this.plugin, latestVersion), this.plugin);
     }

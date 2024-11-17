@@ -19,11 +19,10 @@
 package com.deathmotion.antivpn.models;
 
 import com.deathmotion.antivpn.AVBukkit;
+import com.deathmotion.antivpn.schedulers.impl.FoliaScheduler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Objects;
 
@@ -51,13 +50,8 @@ public class BukkitUser extends CommonUser {
 
     @Override
     public void kickPlayer(Component reason) {
-        if (!Bukkit.isPrimaryThread()) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    player.kickPlayer(LegacyComponentSerializer.legacySection().serialize(reason));
-                }
-            }.runTask(plugin);
-        } else player.kickPlayer(LegacyComponentSerializer.legacySection().serialize(reason));
+        FoliaScheduler.getGlobalRegionScheduler().run(plugin, (o -> {
+            player.kickPlayer(LegacyComponentSerializer.legacySection().serialize(reason));
+        }));
     }
 }

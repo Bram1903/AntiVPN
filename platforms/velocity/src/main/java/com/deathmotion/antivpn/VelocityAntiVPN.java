@@ -61,11 +61,6 @@ public class VelocityAntiVPN extends AntiVPNPlatform<ProxyServer> {
     }
 
     @Override
-    public void kickPlayer(UUID uuid, Component reason) {
-        server.getPlayer(uuid).ifPresent(player -> player.disconnect(reason));
-    }
-
-    @Override
     public void addUpdateNotifier(AVVersion latestVersion) {
         server.getEventManager().register(this, new UpdateNotifier(this.plugin, latestVersion));
     }
